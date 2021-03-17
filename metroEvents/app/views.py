@@ -9,3 +9,4 @@ class LoginView(View):
     # return HttpResponse("Hello, world. You're at the polls index.")
     
     return render(request, 'app/home.html')
+    return render(request, 'app/createEvent.html')
