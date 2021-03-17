@@ -6,6 +6,8 @@ from django.http import HttpResponse
 
 class LoginView(View):
   def get(self,request):
-    # return HttpResponse("Hello, world. You're at the polls index.")
-    
     return render(request, 'app/home.html')
+
+class RegistrationView(View):
+  def get(self,request):
+    return render(request, 'app/registration.html')

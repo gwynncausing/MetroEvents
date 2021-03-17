@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -16,7 +18,7 @@
   <body>
     <nav class="navbar navbar-expand-md navbar-light bg-light">
       <div class="container-fluid">
-        <a class="navbar-brand" href="#">9 Metro Events</a>
+        <a class="navbar-brand" href="{% url 'app:login' %}">9 Metro Events</a>
         <!-- <button
           class="navbar-toggler"
           type="button"
@@ -52,5 +54,9 @@
       integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
       crossorigin="anonymous"
     ></script>
+
+    {% block scripts %}
+    <!-- Additional scripts tags -->
+    {% endblock %}
   </body>
 </html>
