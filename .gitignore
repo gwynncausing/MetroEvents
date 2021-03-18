@@ -8,3 +8,4 @@ metroEvents/app/migrations/0001_initial.py
 *.pyc
 metroEvents/metroEvents/__pycache__/wsgi.cpython-38.pyc
 metroEvents/app/migrations/*
+metroEvents/app/migrations/0001_initial.py

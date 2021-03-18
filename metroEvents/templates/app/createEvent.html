@@ -8,22 +8,32 @@
 		{% csrf_token %}
 		<div class="form-group">
 			<div class = "container">
-				<center><h2>CREATE EVENT</h2></center>
-				<div class = "row">
-					<div class =  "col-sm-6">
+				<div class="d-flex justify-content-center">
+					<h2>CREATE EVENT</h2>
+				</div>
+				<div class = "row mt-4">
+					<div class = "col-sm-6">
 						<label>Event Title</label>
 						<input type="text" class="form-control" id="id-event-title" name = "eventtitle" placeholder="Event Title" required="required">
 					</div>	
-					<div class =  "col-sm-6">
+					<div class = "col-sm-6">
 						<label>Event Type</label>
-						<input type="text" class="form-control" id="id-event-type" name = "eventype" placeholder="Event Type" required="required">
-					</div>	
+						<select class="form-select form-select-md" aria-label=".form-select-md example">
+							<option selected>Open this select menu</option>
+							<option value="1">Trail Biking</option>
+							<option value="2">Basketball</option>
+							<option value="3">Zumba</option>
+							<option value="3">Univercity</option>
+							<option value="3">Run-for-a-cause</option>
+						</select>
+					</div>
 				</div>
 				<br>
 				<div class = "row">
 					<div class =  "col-sm-12">
 						<label>Description</label>
-						<input type="text" class="form-control" id="id-description" name = "description" placeholder="Description" required="required">
+						<!-- <input type="text" class="form-control" id="id-description" name = "description" placeholder="Description" required="required"> -->
+						<textarea name="description" id="id-description" class="form-control" cols="30" rows="5" required style="resize: none;" ></textarea>
 					</div>	
 				</div>
 				<br>
@@ -42,7 +52,7 @@
 
 			<br><br>
 
-			<div class="d-flex justify-content-">
+			<div class="d-flex justify-content-evenly">
 				<button type = "reset" value="reset" class="btn btn-secondary">Cancel</button>
 				<button type="submit" class="btn btn-primary">Submit</button>
 			</div>
