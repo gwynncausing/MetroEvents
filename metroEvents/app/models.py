@@ -90,3 +90,6 @@ class Notification(models.Model):
 class User_Type(models.Model):
     user_type_id = models.ForeignKey('app.User',on_delete=models.PROTECT)
     name = models.CharField(max_length = 50)
+
+
+    
