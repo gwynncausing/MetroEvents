@@ -1,14 +1,16 @@
 {% extends 'base.html' %} {% load static %} {% block content %}
 <div class="login container d-flex justify-content-center">
   <div class="w-80 mt-4">
-    <form
-      action="submit"
-      method="post"
-      autocomplete="off"
-      enctype="multipart/form-data"
-    >
+    <form method="post" autocomplete="off" enctype="multipart/form-data">
       {% csrf_token %}
-      <div class="mb-3 row">
+      <!-- 
+      <div>{{ form.username.label }} {{ form.username }}</div>
+
+      <div>{{ form.email.label }} {{ form.email }}</div>
+      <div>{{ form.password1.label }} {{ form.password1 }}</div>
+      <div>{{ form.password2.label }} {{ form.password2 }}</div> -->
+
+      <!-- <div class="mb-3 row">
         <div class="col">
           <label for="firstname" class="form-label">First Name</label>
           <input
@@ -27,43 +29,43 @@
             class="form-control"
           />
         </div>
-      </div>
+      </div> -->
 
+      <!-- <div class="mb-3">
+      <label for="date" class="form-label">Birthdate</label>
+      <input type="date" name="date" id="date" class="form-control" />
+    </div>
+
+    <div class="col">
+      <label for="barangay" class="form-label">Address</label>
       <div class="mb-3">
-        <label for="date" class="form-label">Birthdate</label>
-        <input type="date" name="date" id="date" class="form-control" />
+        <input
+          type="text"
+          name="barangay"
+          id="barangay"
+          class="form-control"
+          placeholder="Barangay"
+        />
       </div>
-
-      <div class="col">
-        <label for="barangay" class="form-label">Address</label>
-        <div class="mb-3">
-          <input
-            type="text"
-            name="barangay"
-            id="barangay"
-            class="form-control"
-            placeholder="Barangay"
-          />
-        </div>
-        <div class="mb-3">
-          <input
-            type="text"
-            name="city"
-            id="city"
-            class="form-control"
-            placeholder="City"
-          />
-        </div>
-        <div class="mb-3">
-          <input
-            type="text"
-            name="province"
-            id="province"
-            class="form-control"
-            placeholder="Province"
-          />
-        </div>
+      <div class="mb-3">
+        <input
+          type="text"
+          name="city"
+          id="city"
+          class="form-control"
+          placeholder="City"
+        />
       </div>
+      <div class="mb-3">
+        <input
+          type="text"
+          name="province"
+          id="province"
+          class="form-control"
+          placeholder="Province"
+        />
+      </div>
+    </div> -->
 
       <div class="mb-3">
         <label for="username" class="form-label">Username</label>
@@ -72,11 +74,24 @@
           <input
             type="text"
             class="form-control"
-            placeholder="Username"
+            name="username"
+            id="id_username"
             aria-label="Username"
             aria-describedby="basic-addon1"
+            required
           />
         </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="Email" class="form-label">Email</label>
+        <input
+          type="email"
+          name="email"
+          id="id_email"
+          class="form-control"
+          required
+        />
       </div>
 
       <div class="mb-3">
@@ -98,7 +113,6 @@
           class="form-control"
         />
       </div>
-
       <div class="mb-3 d-flex justify-content-between">
         <a class="mt-2" href="{% url 'app:login' %}">
           I already have an account
