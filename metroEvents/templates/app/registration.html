@@ -1,7 +1,13 @@
 {% extends 'base.html' %} {% load static %} {% block content %}
 <div class="login container d-flex justify-content-center">
   <div class="w-80 mt-4">
-    <form action="submit" method="post">
+    <form
+      action="submit"
+      method="post"
+      autocomplete="off"
+      enctype="multipart/form-data"
+    >
+      {% csrf_token %}
       <div class="mb-3 row">
         <div class="col">
           <label for="firstname" class="form-label">First Name</label>
@@ -77,8 +83,18 @@
         <label for="password" class="form-label">Password</label>
         <input
           type="password"
-          name="password"
-          id="password"
+          name="password1"
+          id="password1"
+          class="form-control"
+        />
+      </div>
+
+      <div class="mb-3">
+        <label for="password" class="form-label">Confirm Password</label>
+        <input
+          type="password"
+          name="password2"
+          id="password2"
           class="form-control"
         />
       </div>
