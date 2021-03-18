@@ -1,6 +1,6 @@
 {% extends 'base.html' %} {% load static %} {% block content %}
 <div class="login container d-flex justify-content-center">
-  <div class="w-80 mt-5">
+  <div class="w-80 mt-4">
     <form action="submit" method="post">
       <div class="mb-3 row">
         <div class="col">
@@ -22,6 +22,43 @@
           />
         </div>
       </div>
+
+      <div class="mb-3">
+        <label for="date" class="form-label">Birthdate</label>
+        <input type="date" name="date" id="date" class="form-control" />
+      </div>
+
+      <div class="col">
+        <label for="barangay" class="form-label">Address</label>
+        <div class="mb-3">
+          <input
+            type="text"
+            name="barangay"
+            id="barangay"
+            class="form-control"
+            placeholder="Barangay"
+          />
+        </div>
+        <div class="mb-3">
+          <input
+            type="text"
+            name="city"
+            id="city"
+            class="form-control"
+            placeholder="City"
+          />
+        </div>
+        <div class="mb-3">
+          <input
+            type="text"
+            name="province"
+            id="province"
+            class="form-control"
+            placeholder="Province"
+          />
+        </div>
+      </div>
+
       <div class="mb-3">
         <label for="username" class="form-label">Username</label>
         <div class="input-group">
@@ -53,25 +90,7 @@
         <button type="submit" class="btn btn-primary">Register</button>
       </div>
     </form>
-    <div class="row">
-      Date formats: yyyy-mm-dd, yyyymmdd, dd-mm-yyyy, dd/mm/yyyy, ddmmyyyyy
-    </div>
-    <br />
-    <div class="row">
-      <div class="col-sm-3">
-        <div class="form-group">
-          <div class="input-group date" id="datetimepicker1">
-            <input type="text" class="form-control" />
-            <span class="input-group-addon"
-              ><span class="glyphicon glyphicon-calendar"></span>
-            </span>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 </div>
 
-{% endblock %} {% block scripts %}
-<script src="{% static 'js/datepicker.js' %}"></script>
-{% endblock %}
+{% endblock %} {% block scripts %} {% endblock %}
