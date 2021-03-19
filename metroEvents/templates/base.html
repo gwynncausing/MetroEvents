@@ -19,6 +19,9 @@
     <nav class="navbar navbar-expand-md navbar-light bg-light">
       <div class="container-fluid">
         <a class="navbar-brand" href="{% url 'app:login' %}">9 Metro Events</a>
+        {% if authenticated%}
+        <a class="navbar-brand" href="{% url 'app:logout' %}">Logout</a>
+        {% endif %}
         <!-- <button
           class="navbar-toggler"
           type="button"

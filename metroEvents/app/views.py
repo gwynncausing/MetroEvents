@@ -8,11 +8,20 @@ from .forms import CreateUserForm
 from django.template import RequestContext, context
 from django.contrib import messages
 
+from django.contrib.auth.decorators import login_required
+
 # Create your views here.
+
+def logoutUser(request):
+  logout(request)
+  return render(request, 'app/home.html')
 
 class LoginView(View):
   def get(self,request):
+    if request.user.is_authenticated:
+      return redirect('app:user')
     return render(request, 'app/home.html')
+    
 
   def post(self, request):
     print("hello")
@@ -24,13 +33,11 @@ class LoginView(View):
 
       if user is not None:
         login(request, user)
-        return HttpResponse("Sucessfully logged in!")
-        # redirect
+        return redirect('app:user')
       else:
         messages.info(request, "Username or password is incorrect!")
-        # return return HttpResponse("Username or password is incorrect!")
     context = {}
-    return render(request, 'app/home.html', context)
+    return render(request, 'app:login', context)
 
 class RegistrationView(View):
   def get(self,request):
@@ -51,7 +58,12 @@ class RegistrationView(View):
 
 class CreateEventView(View):
   def get(self,request):
-    #form = CreateEventForm()
-
-   # context = {'form': form}
+    context = {}
     return render(request, 'app/createEvent.html', context)
+
+class RegularUserView(View):
+  def get(self, request):
+    if request.user.is_authenticated:
+      context = {"authenticated" : True}
+      return render(request, 'app/regularUserDashboard.html', context)
+    return render(request, 'app/home.html')
