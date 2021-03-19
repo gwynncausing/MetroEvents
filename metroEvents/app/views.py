@@ -4,8 +4,9 @@ from django.views.generic import View
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
-from .forms import CreateUserForm, LoginForm
+from .forms import CreateUserForm
 from django.template import RequestContext, context
+from django.contrib import messages
 
 # Create your views here.
 
@@ -14,14 +15,22 @@ class LoginView(View):
     return render(request, 'app/home.html')
 
   def post(self, request):
-    form = LoginForm(request.POST)
-    print("form is valid: " , form.is_valid())
-    if form.is_valid():
-      user = form.get_user()
-      login(request, user)
-      return HttpResponse("Sucessfully logged in")
-    print(form.errors)
-    return HttpResponse("error!")
+    print("hello")
+    if request.method == 'POST':
+      username = request.POST.get('username')
+      password = request.POST.get('password')
+
+      user = authenticate(request, username = username, password = password)
+
+      if user is not None:
+        login(request, user)
+        return HttpResponse("Sucessfully logged in!")
+        # redirect
+      else:
+        messages.info(request, "Username or password is incorrect!")
+        # return return HttpResponse("Username or password is incorrect!")
+    context = {}
+    return render(request, 'app/home.html', context)
 
 class RegistrationView(View):
   def get(self,request):
