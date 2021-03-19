@@ -8,7 +8,7 @@
 		  <h2><b>ADMINISTRATOR DASHBOARD</b></h2>
 		</div>
 	</div>
-
+	<br>
 	<div class="container">
 		<div class="row-sm-4">
 			<div class="text-left">
@@ -16,7 +16,7 @@
     			<input class="form-control" id="id-admin-input" type="text" placeholder="Search">
 					<table id="id-users-list" class="table table-striped table-bordered table-sm table-hover" cellspacing="0" width="100%" style="background-color: #e9fbff">
 					    <thead>
-							<tr>
+							<tr style="text-align: center">
 							  <th class="th-sm">ID</th>
 							  <th class="th-sm">Date Registered</th>
 							  <th class="th-sm">Firstname</th>
@@ -26,7 +26,7 @@
 						
 						<tbody id = "id-users-table">
 						 <!--  backend code here -->
-							<tr>
+							<tr style="text-align: center">
 							  <td><!--  backend code here --></td>
 							  <td><!--  backend code here --></td>
 							  <td><!--  backend code here --></td>
@@ -35,7 +35,7 @@
 						</tbody>
 				
 						<tfoot>
-							<tr>
+							<tr style="text-align: center">
 							  <th>ID</th>
 							  <th>Date Registered</th>
 							  <th>Firstname</th>
@@ -46,7 +46,7 @@
 					
 				<br><br>
 				
-				<center><h3><b>EVENTS</b></h3></center>
+				<center><h3><b>Events</b></h3></center>
 				<div>
            			<form id = "form1" action="" method="POST" autocomplete="off" enctype="multipart/form-data">
                 	{% csrf_token %}
@@ -66,7 +66,7 @@
 					</thead>
 					<tbody id = "id-events-table">
 						<!--  backend code here -->
-						   <tr>
+						   <tr style = "text-align: center">
 							 <td><!--  backend code here --></td>
 							 <td><!--  backend code here --></td>
 							 <td><!--  backend code here --></td>
@@ -152,7 +152,7 @@
 							            {% csrf_token %} 
 							          	
 								          	<div class="modal-body">
-									          	<!-- <input type="text" name="" value = {{}} hidden> -->
+									          	<input type="text" name="eventID" hidden>
 									            Are you sure you want to delete this customer?
 									        </div>
 
@@ -167,7 +167,7 @@
 					</tbody>
 
 					<tfoot>
-						<tr>
+						<tr style="text-align: center">
 							<th class="th-sm">Event Title</th>
 							<th class="th-sm">Event Type</th>
 							<th class="th-sm">Start Date</th>
@@ -182,7 +182,7 @@
 				<center><h3><b>Organizer Requests</b></h3></center>
 					<table id="id-organizer-request" class="table table-striped table-bordered table-sm table-hover" cellspacing="0" width="100%" style="background-color: #e9fbff">
 					    <thead>
-							<tr>
+							<tr style="text-align: center">
 							  <th class="th-sm">ID</th>
 							  <th class="th-sm">Date Registered</th>
 							  <th class="th-sm">Username</th>
@@ -191,7 +191,7 @@
 						
 						<tbody id = "id-orgRequest-table">
 						 <!--  backend code here -->
-							<tr>
+							<tr style="text-align: center">
 							  <td><!--  backend code here --></td>
 							  <td><!--  backend code here --></td>
 							  <td><!--  backend code here --></td>
@@ -199,7 +199,7 @@
 						</tbody>
 				
 						<tfoot>
-							<tr>
+							<tr style="text-align: center">
 							  <th>ID</th>
 							  <th>Date Registered</th>
 							  <th>Username</th>

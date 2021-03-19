@@ -4,8 +4,6 @@
 
 {% block content %}
 
-	<form id = "form1" action="" method="POST" autocomplete="off" enctype="multipart/form-data">
-		{% csrf_token %}
 		<div class="form-group">
 			<div class = "container">
 				<div class="d-flex justify-content-center">
@@ -18,7 +16,7 @@
 					</div>	
 					<div class = "col-sm-6">
 						<label>Event Type</label>
-						<select class="form-select form-select-md" aria-label=".form-select-md example">
+						<select name = "eventtype" id = "id-event-type" class="form-select form-select-md" aria-label=".form-select-md example">
 							<option selected>Open this select menu</option>
 							<option value="1">Trail Biking</option>
 							<option value="2">Basketball</option>
@@ -32,7 +30,6 @@
 				<div class = "row">
 					<div class =  "col-sm-12">
 						<label>Description</label>
-						<!-- <input type="text" class="form-control" id="id-description" name = "description" placeholder="Description" required="required"> -->
 						<textarea name="description" id="id-description" class="form-control" cols="30" rows="5" required style="resize: none;" ></textarea>
 					</div>	
 				</div>
@@ -54,12 +51,15 @@
 
 			<br><br>
 
-			<div class="d-flex justify-content-evenly">
-				<button type = "reset" value="reset" class="btn btn-secondary">Cancel</button>
-				<button type="submit" class="btn btn-primary">Submit</button>
-			</div>
+			<form id = "form1" action="" method="POST" autocomplete="off" enctype="multipart/form-data">
+				{% csrf_token %}			
+				<div class="d-flex justify-content-evenly">
+					<button type = "reset" value = "reset" class = "btn btn-secondary">Cancel</button>
+					<button type = "submit" class = "btn btn-primary">Submit</button>
+				</div>
+			</form>
 		</div>
-	</form>
+		
 {% endblock content %}
 		
 

@@ -44,6 +44,7 @@ class Event(models.Model):
     datetime_start = models.DateTimeField(auto_now_add = True, blank = True)
     datetime_end = models.DateTimeField(auto_now_add = True, blank = True)
     upvotes = models.IntegerField(default = 0, blank = True, null = True)
+    
     participants = models.ManyToManyField(User, blank = True)
     
     def __str__(self):

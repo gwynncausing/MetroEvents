@@ -9,3 +9,9 @@ class CreateUserForm(UserCreationForm):
   class Meta:
     model = User
     fields = ['username', 'email', 'password1', 'password2']
+
+
+class CreateEventForm(forms.ModelForm):
+  class Meta:
+    model = Event
+    fields = ['title', 'type', 'description']
