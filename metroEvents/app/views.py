@@ -14,7 +14,7 @@ from django.contrib.auth.decorators import login_required
 
 def logoutUser(request):
   logout(request)
-  return redirect('app:login')
+  return render(request, 'app/home.html')
 
 class LoginView(View):
   def get(self,request):
