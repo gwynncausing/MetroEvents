@@ -31,4 +31,7 @@ class RegistrationView(View):
 
 class CreateEventView(View):
   def get(self,request):
-    return render(request, 'app/createEvent.html')
+    form = CreateEventForm()
+
+    context = {'form': form}
+    return render(request, 'app/createEvent.html', context)
