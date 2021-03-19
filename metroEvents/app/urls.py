@@ -10,5 +10,7 @@ urlpatterns = [
   path('register/', app_views.RegistrationView.as_view(), name = "registration"),
   path('user/', app_views.RegularUserView.as_view(), name = "user"),
   path('createEvent/', app_views.CreateEventView.as_view(), name = "create_event"),
-  path('adminDashboard/', app_views.AdminDashboardView.as_view(), name = "admin_dashboard")
+  path('adminDashboard/', app_views.AdminDashboardView.as_view(), name = "admin_dashboard"),
+  path('orgDashboard/', app_views.OrgDashboardView.as_view(), name = "org_dashboard"),
+
 ]

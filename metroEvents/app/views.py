@@ -102,3 +102,9 @@ class AdminDashboardView(View):
   def get(self, request):
     context = {}
     return render(request, 'app/adminDashboard.html', context)
+
+
+class OrgDashboardView(View):
+  def get(self, request):
+    context = {}
+    return render (request, 'app/orgDashboard.html', context)
