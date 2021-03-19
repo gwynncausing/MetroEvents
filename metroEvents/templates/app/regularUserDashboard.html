@@ -1,0 +1,55 @@
+{% extends 'base.html' %} 
+
+{% load static %}
+
+{% block content %}
+
+	<form id = "form1" action="" method="POST" autocomplete="off" enctype="multipart/form-data">
+		{% csrf_token %}
+		<div class="form-group">
+			<div class = "container">
+				<center><h2>REGULAR USER DASHBOARD</h2></center>	
+                <div class = "card shadow mb-4">
+                    <p align="right"><input type="submit" value="REQUEST TO BECOME ORGANIZER"></p>
+                        <h3 class="font-weight-bold text-dark">EVENTS</h3> 
+                </div>
+                    <div class="table">
+                        <table class="table table-bordered" width="90%" cellspacing="3">
+                            <thead>
+                            <tr style="background-color: #c1e3f2; color: black;">
+                                <th style="text-align:center">Title</th>
+                                <th style="text-align:center">Type</th>
+                                <th style="text-align:center">Description</th>
+                                <th style="text-align:center">Date Time Start</th>
+                                <th style="text-align:center">Date Time End</th>
+                                <th style="text-align:center;">Upvotes</th>
+                                <th style="text-align:center;">Participants</th>
+                                <th style="text-align:center;">Action</th>
+                            </tr>
+                            </thead>   
+                            <tbody>
+                            <tr>
+                                <td><center>Title</center></td>
+                                <td><center>Type</center></td>
+                                <td><center>Description</center></td>
+                                <td><center>Date Time Start</center></td>
+                                <td><center>Date Time End</center></td>
+                                <td><center>Upvotes</center></td>
+                                <td><center>Participants</center></td>
+                                <td><center>
+                                <div class="text-center"> 
+                                    <button type="submit" class="btn btn-primary">Request to join</button>
+                                    <button type = "reset" class="btn btn-secondary">Cancel</button>
+                                </div>
+                                </center>
+                                </td>
+                            </tr> 
+                            </tbody>   
+                        </table>
+                    </div>
+            </div>
+        </div>
+	</form>
+{% endblock content %}
+		
+
