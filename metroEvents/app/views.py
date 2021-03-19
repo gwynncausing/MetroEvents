@@ -26,18 +26,16 @@ class LoginView(View):
     
 
   def post(self, request):
-    print("hello")
-    if request.method == 'POST':
-      username = request.POST.get('username')
-      password = request.POST.get('password')
+    username = request.POST.get('username')
+    password = request.POST.get('password')
 
-      user = authenticate(request, username = username, password = password)
+    user = authenticate(request, username = username, password = password)
 
-      if user is not None:
-        login(request, user)
-        return redirect('app:user')
-      else:
-        messages.info(request, "Username or password is incorrect!")
+    if user is not None:
+      login(request, user)
+      return redirect('app:user')
+    else:
+      messages.info(request, "Username or password is incorrect!")
     return render(request, 'app/home.html')
 
 class RegistrationView(View):
@@ -58,15 +56,15 @@ class RegistrationView(View):
       return redirect('app:login')
     return HttpResponse("error!")
 
-
-class CreateEventView(View):
-  def get(self,request):
-    context = {}
-    return render(request, 'app/createEvent.html', context)
-
 class RegularUserView(View):
   def get(self, request):
     if request.user.is_authenticated:
       context = {"authenticated" : True}
       return render(request, 'app/regularUserDashboard.html', context)
     return render(request, 'app/home.html')
+
+class CreateEventView(View):
+  def get(self,request):
+    context = {}
+    return render(request, 'app/createEvent.html', context)
+
