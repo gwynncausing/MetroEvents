@@ -10,6 +10,8 @@ from django.contrib import messages
 
 from django.contrib.auth.decorators import login_required
 
+from django.contrib.auth.forms import UserCreationForm
+
 # Create your views here.
 
 def logoutUser(request):
@@ -36,23 +38,24 @@ class LoginView(View):
         return redirect('app:user')
       else:
         messages.info(request, "Username or password is incorrect!")
-    context = {}
-    return render(request, 'app:login', context)
+    return render(request, 'app/home.html')
 
 class RegistrationView(View):
   def get(self,request):
+    if request.user.is_authenticated:
+      return redirect('app:user')
     form = CreateUserForm()
     
     context = {'form': form}
     return render(request, 'app/registration.html', context)
   
   def post(self, request):
-    form = CreateUserForm(request.POST)
-    print("form is valid: " , form.is_valid())
+    form = UserCreationForm(request.POST)
+    print(form.is_valid())
     if form.is_valid():
       form.save()
+      username = form.cleaned_data.get('username')
       return redirect('app:login')
-    print(form.errors)
     return HttpResponse("error!")
 
 
