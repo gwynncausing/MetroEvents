@@ -7,6 +7,7 @@ from django.contrib.auth import authenticate, login, logout
 from .forms import CreateUserForm, CreateEventForm
 from django.template import RequestContext, context
 from django.contrib import messages
+from datetime import datetime, date
 
 
 from django.contrib.auth.forms import UserCreationForm
@@ -67,14 +68,7 @@ class RegistrationView(View):
     form = UserCreationForm(request.POST)
     print(form.is_valid())
     if form.is_valid():
-      MyUser = form.save()
-      # MyUser.objects.create()
-      print(request.POST.get('username'))
-      # username = request.POST.get('username')
-      user = User.objects.get(username = 'ginn')
-      # MyUser.objects.create(user_ptr_id = user.id)
-      # MyUser.save()
-      print(user.id)
+      form.save()
       return redirect('app:login')
     print(form.errors)
     return HttpResponse("error!")
@@ -138,11 +132,24 @@ class OrgDashboardView(View):
   def get(self, request):
     if request.user.is_authenticated:
       currentUser = request.user
+      # title = 'test'
+      # type = 'test'
+      # description = 'none'
+      # upvotes = 0
+      # dateee = date.today()
+      # event = Event.objects.create(title = title, type = type, description = description, datetime_start = dateee, datetime_end= dateee, upvotes = upvotes)
+      # print('current user: ', currentUser.id)
+      # organizer = Organizer.objects.create(organizer_id = currentUser.id)
+      print(currentUser.is_staff)
+      currentUser.is_staff = True
+      currentUser.save()
+      print('yay')
       if currentUser.is_superuser:
           return redirect('app:administrator')
       elif not currentUser.is_staff:
         return redirect('app:user')
       elif currentUser.is_staff:
+        # events = Event.objects.get()
         return render (request, 'app/orgDashboard.html')
       else:
         return HttpResponse("wrong na")

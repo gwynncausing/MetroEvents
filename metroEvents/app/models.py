@@ -73,7 +73,7 @@ class Request(models.Model):
         return self.requestType + " - " + str(self.id)
 
 class Organizer(models.Model):
-    organizer = models.ForeignKey(User, on_delete=models.CASCADE, null = True, blank = True)
+    organizer = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True, default = 0)
     datePromoted = models.DateField(auto_now_add = True, blank = True)
     request = models.ManyToManyField(Request, blank = True)
     event = models.ManyToManyField(Event, blank = True)
@@ -82,7 +82,7 @@ class Organizer(models.Model):
         return self.organizer_Id.username
 
 class Administrator(models.Model):
-    admin = models.ForeignKey(User, on_delete=models.CASCADE, null = True, blank = True)
+    admin = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True, default = 0)
     datePromoted = models.DateField(auto_now_add = True, blank = True)
     request = models.ManyToManyField(Request, blank = True)
 
