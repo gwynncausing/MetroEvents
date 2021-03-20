@@ -26,7 +26,7 @@ SECRET_KEY = '+psx3oqj#lkjwaqk9(&s59*=yb*x_wd7c^+!y-15)^wcc^25m#'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['http://webmetro9.azurewebsites.net/']
 
 
 # Application definition
