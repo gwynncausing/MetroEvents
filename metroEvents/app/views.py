@@ -89,29 +89,33 @@ class RegularUserView(View):
 
 class CreateEventView(View):
   def get(self,request):
-    context = {}
-    return render(request, 'app/createEvent.html', context)
+    # form = CreateEventForm()
+    # context = {'form':form}
+    return render(request, 'app/createEvent.html')
   
   def post(self, request):
     form = CreateEventForm(request.POST)
+    print(form.is_valid())
     if form.is_valid():
-      title = request.POST.get("eventtitle")
-      type = request.POST.get("eventtype")
-      description = request.POST.get("description")
-      datetime_start = request.POST.get("startdate")
-      datetime_end = request.POST.get("enddate")
-      # upvotes = 
-      # participants = 
+      # title = request.POST.get("eventtitle")
+      # type = request.POST.get("eventtype")
+      # description = request.POST.get("description")
+      # datetime_start = request.POST.get("startdate")
+      # datetime_end = request.POST.get("enddate")
+      # # upvotes = 
+      # # participants = 
 
-      form = Event(title = title, type = type, description = description, datetime_start = datetime_start, datetime_end = datetime_end)
+      # form = Event(title = title, type = type, description = description, datetime_start = datetime_start, datetime_end = datetime_end)
       
       form.save()
 
       print("Event successfully created.")
-      return HttpResponse('success')
+      return HttpResponse('Event successfully created.')
+      # return redirect('app:admin')
 
     else:
-      return HttpResponse('error')
+      print(form.errors)
+      return redirect('app:create_event')
 
 class AdminDashboardView(View):
   def get(self, request):

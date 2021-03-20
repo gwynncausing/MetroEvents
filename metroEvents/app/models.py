@@ -41,9 +41,9 @@ class Event(models.Model):
     title = models.CharField(max_length = 45)
     type = models.CharField(max_length = 45)
     description = models.CharField(max_length = 100)
-    datetime_start = models.DateTimeField(auto_now_add = True, blank = True)
-    datetime_end = models.DateTimeField(auto_now_add = True, blank = True)
-    upvotes = models.IntegerField(default = 0, blank = True, null = True)
+    datetime_start = models.DateField(default = timezone.now, blank = True)
+    datetime_end = models.DateField(default = timezone.now, blank = True)
+    # upvotes = models.IntegerField(default = 0, blank = True, null = True)
     
     participants = models.ManyToManyField(User, blank = True)
     
