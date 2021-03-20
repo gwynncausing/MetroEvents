@@ -1,0 +1,109 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+
+<div class="container">
+  <div class="text-left">
+    <h2><b>REGULAR USER DASHBOARD</b></h2>
+  </div>
+</div>
+<br />
+<div class="container">
+  <div class="row-sm-4">
+    <div class="text-left">
+      <h3 class="font-weight-bold text-dark">EVENTS PARTICIPATED</h3>
+    </div>
+    <div class="table">
+      <table class="table table-bordered" width="90%" cellspacing="3">
+        <thead style="text-align: center">
+          <tr style="background-color: #c1e3f2; color: black">
+            <th>Title</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Date Time Start</th>
+            <th>Date Time End</th>
+            <th>Review</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="text-align: center">
+            <td>Title</td>
+            <td>Type</td>
+            <td>Description</td>
+            <td>Date Time Start</td>
+            <td>Date Time End</td>
+            <td>
+              <center>
+                <div class="text-center">
+                  <button type="submit" class="btn btn-primary">Upvote</button>
+                  <button type="submit" class="btn btn-primary">Comment</button>
+                </div>
+              </center>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<br />
+<div class="container">
+  <div class="row-sm-4">
+    <div align="right">
+      <button type="button" class="btn btn-primary">
+        Request To Become Organizer
+      </button>
+    </div>
+    <div class="text-left">
+      <h3 class="font-weight-bold text-dark">EVENTS</h3>
+    </div>
+
+    <div class="table">
+      <table class="table table-bordered" width="90%" cellspacing="3">
+        <thead style="text-align: center">
+          <tr style="background-color: #c1e3f2; color: black">
+            <th>Title</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Date Time Start</th>
+            <th>Date Time End</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for event in events %}
+          <tr style="text-align: center">
+            <td>{{event.title}}</td>
+            <td>{{event.type}}</td>
+            <td>{{event.description}}</td>
+            <td>{{event.datetime_start}}</td>
+            <td>{{event.datetime_end}}</td>
+            <td>
+              <center>
+                <div class="text-center">
+                  <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input
+                      type="number"
+                      name="event-id"
+                      value="{{event.id}}"
+                      hidden
+                    />
+                    <button
+                      name="requestToJoin"
+                      type="submit"
+                      class="btn btn-primary"
+                    >
+                      Request to join
+                    </button>
+                  </form>
+                </div>
+              </center>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}
