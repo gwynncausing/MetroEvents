@@ -11,8 +11,7 @@
     <div class="text-left">
       <h3 class="font-weight-bold text-dark">EVENTS PARTICIPATED</h3>
     </div>
-    <div class="table">
-      <table class="table table-bordered" width="90%" cellspacing="3">
+      <table class="table table-bordered" id="id-events-participated" width="90%" cellspacing="3">
         <thead style="text-align: center">
           <tr style="background-color: #c1e3f2; color: black">
             <th>Title</th>
@@ -34,30 +33,80 @@
               <center>
                 <div class="text-center">
                   <button type="submit" class="btn btn-primary">Upvote</button>
-                  <button type="submit" class="btn btn-primary">Comment</button>
+							    <button type="submit" class="btn btn-primary">Comment</button>
                 </div>
               </center>
             </td>
           </tr>
         </tbody>
       </table>
-    </div>
   </div>
 </div>
 <br />
 <div class="container">
   <div class="row-sm-4">
     <div align="right">
+      <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
       <button type="button" class="btn btn-primary">
         Request To Become Organizer
       </button>
+      </form>
+      {% endfor %}
     </div>
+    <!-- Modal Request To Join-->
+    <div class="modal fade" id="ModalRequestJoin" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 class="modal-title" id="exampleModalLabel" >Request To Become Organizer</h2>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"> 
+                <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <!-- Modal Body -->
+          <div class="modal-body">
+            <div class = "row">
+              <div class =  "col-sm-6">
+                <label>Firstname</label>
+                <input type="text" class="form-control" id="id-firstname" required="required">
+              </div>
+              <div class =  "col-sm-6">
+                <label>Lastname</label>
+                <input type="text" class="form-control" id="id-lastname" required="required">
+              </div>
+              <div class =  "col-sm-6">
+                <label>Username</label>
+                <input type="text" class="form-control" id="id-username" required="required">
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        </div>
+        <!-- Message -->
+        <div class="modal fade" id="submitModal" data-backdrop="static">
+          <div class="modal1-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+              </div>
+              <div class="modal-body">
+                <p><center>Your request was successfully submitted. Wait for the organizers approval</center></p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Exit</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Message Ends -->
+          <!-- Modal Body End -->
+
     <div class="text-left">
       <h3 class="font-weight-bold text-dark">EVENTS</h3>
     </div>
-
-    <div class="table">
-      <table class="table table-bordered" width="90%" cellspacing="3">
+      <table class="table table-bordered" id="id-events-list" width="90%" cellspacing="3">
         <thead style="text-align: center">
           <tr style="background-color: #c1e3f2; color: black">
             <th>Title</th>
@@ -91,6 +140,8 @@
                       name="requestToJoin"
                       type="submit"
                       class="btn btn-primary"
+                      data-toggle="modal" 
+                      data-target="#ModalRequestToJoin"
                     >
                       Request to join
                     </button>
@@ -99,11 +150,65 @@
               </center>
             </td>
           </tr>
+
+            <!-- Modal Request To Join-->
+            <div class="modal fade" id="ModalRequestJoin" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h2 class="modal-title" id="exampleModalLabel" >Request To Join</h2>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close"> 
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                  </div>
+                  <!-- ModalBody -->
+                  <div class="modal-body">
+                    <div class = "row">
+                      <div class =  "col-sm-6">
+                        <label>Firstname</label>
+                        <input type="text" class="form-control" id="id-firstname" required="required">
+                      </div>
+                      <div class =  "col-sm-6">
+                        <label>Lastname</label>
+                        <input type="text" class="form-control" id="id-lastname" required="required">
+                      </div>
+                      <div class =  "col-sm-6">
+                        <label>Username</label>
+                        <input type="text" class="form-control" id="id-username" required="required">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                </div>
+                <!-- Message -->
+                <div class="modal fade" id="submitModal" data-backdrop="static">
+                  <div class="modal1-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                      </div>
+                      <div class="modal-body">
+                        <p><center>Your request was successfully submitted. Wait for the admins approval</center></p>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Exit</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Message Ends -->
+                  <!-- Modal Body End -->
+
+                </div>
+              </div>
+            </div>
+            <!-- Modal Request To Join Ends -->
           {% endfor %}
         </tbody>
       </table>
-    </div>
   </div>
 </div>
 
 {% endblock content %}
+
