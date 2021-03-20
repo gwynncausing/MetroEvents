@@ -80,12 +80,19 @@ class RegularUserView(View):
       if currentUser.is_superuser:
         return redirect('app:admin')
       elif not currentUser.is_staff:
-        return render(request, 'app/regularUserDashboard.html')
+        events = Event.objects.all()
+        context = {'events': events}
+        return render(request, 'app/regularUserDashboard.html', context)
       elif currentUser.is_staff:
         return redirect('app:organizer')
       else:
         return HttpResponse("wrong na")
     return render(request, 'app/home.html')
+
+  def post(self, request):
+    if 'requestToJoin' in request.POST:
+      print(request.POST.get('event-id'))
+      return redirect('app:user')
 
 class CreateEventView(View):
   def get(self,request):
@@ -132,6 +139,7 @@ class OrgDashboardView(View):
   def get(self, request):
     if request.user.is_authenticated:
       currentUser = request.user
+      # DO NOT DELETE THIS -----------------------------------
       # title = 'test'
       # type = 'test'
       # description = 'none'
@@ -143,13 +151,13 @@ class OrgDashboardView(View):
       # print(currentUser.is_staff)
       # currentUser.is_staff = True
       # currentUser.save()
+      # DO NOT DELETE THIS -----------------------------------
       print('yay')
       if currentUser.is_superuser:
           return redirect('app:administrator')
       elif not currentUser.is_staff:
         return redirect('app:user')
       elif currentUser.is_staff:
-        # events = Event.objects.get()
         return render (request, 'app/orgDashboard.html')
       else:
         return HttpResponse("wrong na")
