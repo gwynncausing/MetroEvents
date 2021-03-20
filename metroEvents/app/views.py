@@ -140,9 +140,9 @@ class OrgDashboardView(View):
       # event = Event.objects.create(title = title, type = type, description = description, datetime_start = dateee, datetime_end= dateee, upvotes = upvotes)
       # print('current user: ', currentUser.id)
       # organizer = Organizer.objects.create(organizer_id = currentUser.id)
-      print(currentUser.is_staff)
-      currentUser.is_staff = True
-      currentUser.save()
+      # print(currentUser.is_staff)
+      # currentUser.is_staff = True
+      # currentUser.save()
       print('yay')
       if currentUser.is_superuser:
           return redirect('app:administrator')
