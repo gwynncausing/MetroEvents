@@ -8,9 +8,9 @@ from .forms import CreateUserForm, CreateEventForm
 from django.template import RequestContext, context
 from django.contrib import messages
 
-from django.contrib.auth.decorators import login_required
 
 from django.contrib.auth.forms import UserCreationForm
+from app.models import *
 
 # Create your views here.
 
@@ -21,7 +21,15 @@ def logoutUser(request):
 class LoginView(View):
   def get(self,request):
     if request.user.is_authenticated:
-      return redirect('app:user')
+      currentUser = request.user
+      if not currentUser.is_staff:
+        return redirect('app:user')
+      elif currentUser.is_staff:
+        return redirect('app:organizer')
+      elif currentUser.is_superuser:
+        return redirect('app:administrator')
+      else:
+        return HttpResponse("wrong na")
     return render(request, 'app/home.html')
     
 
@@ -32,8 +40,16 @@ class LoginView(View):
     user = authenticate(request, username = username, password = password)
 
     if user is not None:
+      currentUser = user
       login(request, user)
-      return redirect('app:user')
+      if not currentUser.is_staff:
+        return redirect('app:user')
+      elif currentUser.is_staff:
+        return redirect('app:organizer')
+      elif currentUser.is_superuser:
+        return redirect('app:administrator')
+      else:
+        return HttpResponse("wrong na")
     else:
       messages.info(request, "Username or password is incorrect!")
     return render(request, 'app/home.html')
@@ -51,16 +67,30 @@ class RegistrationView(View):
     form = UserCreationForm(request.POST)
     print(form.is_valid())
     if form.is_valid():
-      form.save()
-      username = form.cleaned_data.get('username')
+      MyUser = form.save()
+      # MyUser.objects.create()
+      print(request.POST.get('username'))
+      # username = request.POST.get('username')
+      user = User.objects.get(username = 'ginn')
+      # MyUser.objects.create(user_ptr_id = user.id)
+      # MyUser.save()
+      print(user.id)
       return redirect('app:login')
+    print(form.errors)
     return HttpResponse("error!")
 
 class RegularUserView(View):
   def get(self, request):
     if request.user.is_authenticated:
-      context = {"authenticated" : True}
-      return render(request, 'app/regularUserDashboard.html', context)
+      currentUser = request.user
+      if currentUser.is_superuser:
+        return redirect('app:admin')
+      elif not currentUser.is_staff:
+        return render(request, 'app/regularUserDashboard.html')
+      elif currentUser.is_staff:
+        return redirect('app:organizer')
+      else:
+        return HttpResponse("wrong na")
     return render(request, 'app/home.html')
 
 class CreateEventView(View):
@@ -89,22 +119,31 @@ class CreateEventView(View):
     else:
       return HttpResponse('error')
 
-
-class RegularUserView(View):
-  def get(self, request):
-    if request.user.is_authenticated:
-      context = {"authenticated" : True}
-      return render(request, 'app/regularUserDashboard.html', context)
-    return render(request, 'app/home.html')
-
-
 class AdminDashboardView(View):
   def get(self, request):
-    context = {}
-    return render(request, 'app/adminDashboard.html', context)
+    if request.user.is_authenticated:
+      currentUser = request.user
+      if currentUser.is_superuser:
+        return render(request, 'app/adminDashboard.html')
+      elif not currentUser.is_staff:
+        return redirect('app:user')
+      elif currentUser.is_staff:
+        return redirect('app:organizer')
+      else:
+        return HttpResponse("wrong na")
+    return HttpResponse("wrong na")
 
 
 class OrgDashboardView(View):
   def get(self, request):
-    context = {}
-    return render (request, 'app/orgDashboard.html', context)
+    if request.user.is_authenticated:
+      currentUser = request.user
+      if currentUser.is_superuser:
+          return redirect('app:administrator')
+      elif not currentUser.is_staff:
+        return redirect('app:user')
+      elif currentUser.is_staff:
+        return render (request, 'app/orgDashboard.html')
+      else:
+        return HttpResponse("wrong na")
+    return HttpResponse("wrong na")

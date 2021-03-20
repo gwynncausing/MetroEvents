@@ -1,8 +1,8 @@
 from django.db import models
 from django.utils import timezone
 import datetime
-from django.contrib.auth.models import AbstractBaseUser
 from django.utils.translation import gettext_lazy as _
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -15,26 +15,26 @@ class Address(models.Model):
     def __str__(self):
         return self.barangay + ", " + self.city + ", " + self.province
 
-class User(AbstractBaseUser):
-    USER_TYPE = (
-        ('Regular', 'Regular'),
-        ('Organizer', 'Organizer'),
-        ('Admin', 'Admin'),
-    )
+# class MyUser(User):
+#     USER_TYPE = (
+#         ('Regular', 'Regular'),
+#         ('Organizer', 'Organizer'),
+#         ('Admin', 'Admin'),
+#     )
     
-    first_name = models.CharField(max_length = 50, null = True, blank = True)
-    last_name = models.CharField(max_length = 50, null = True, blank = True)
-    username = models.CharField(max_length = 30, unique = True, null = True)
-    password = models.TextField(default = "123")
-    email = models.CharField(max_length = 40, null = True)
-    date_joined = models.DateField(auto_now_add = True, null = True)
-    address =  models.ForeignKey(Address, on_delete=models.SET_NULL, null = True, blank = True)
-    usertype = models.CharField(max_length = 30, null = True, choices = USER_TYPE, default = "Regular")
+#     # first_name = models.CharField(max_length = 50, null = True, blank = True)
+#     # last_name = models.CharField(max_length = 50, null = True, blank = True)
+#     # username = models.CharField(max_length = 30, unique = True, null = True)
+#     # password = models.TextField(default = "123")
+#     # email = models.CharField(max_length = 40, null = True)
+#     # date_joined = models.DateField(auto_now_add = True, null = True)
+#     # address =  models.ForeignKey(Address, on_delete=models.SET_NULL, null = True, blank = True)
+#     usertype = models.CharField(max_length = 30, null = True, choices = USER_TYPE, default = "Regular")
 
-    USERNAME_FIELD = 'username'
+#     USERNAME_FIELD = 'username'
 
-    def __str__(self):
-        return self.username
+#     def __str__(self):
+#         return self.username
 
 class Event(models.Model):
     # organizer = models.ForeignKey(User, on_delete=models.CASCADE, null = True, blank = True)
