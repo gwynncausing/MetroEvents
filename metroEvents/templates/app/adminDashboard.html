@@ -9,9 +9,9 @@
 <div class="container">
   <div class="row-sm-4">
     <div class="text-left">
-      <center>
+      <div class="mb-3">
         <h3><b>Registered Users</b></h3>
-      </center>
+      </div>
       <input
         class="form-control"
         id="id-admin-input"
@@ -62,23 +62,9 @@
       </table>
 
       <br /><br />
-
-      <center>
+      <div class="d-flex justify-content-between mb-3">
         <h3><b>Events</b></h3>
-      </center>
-      <div>
-        <form
-          id="form1"
-          action=""
-          method="POST"
-          autocomplete="off"
-          enctype="multipart/form-data"
-        >
-          {% csrf_token %}
-          <p align="right">
-            <button type="button" class="btn btn-primary">Create Event</button>
-          </p>
-        </form>
+        <button type="button" class="btn btn-primary">Create Event</button>
       </div>
 
       <table
@@ -322,9 +308,9 @@
 
       <br /><br />
 
-      <center>
+      <div class="mb-3">
         <h3><b>Organizer Requests</b></h3>
-      </center>
+      </div>
       <table
         id="id-organizer-request"
         class="table table-striped table-bordered table-sm table-hover"
