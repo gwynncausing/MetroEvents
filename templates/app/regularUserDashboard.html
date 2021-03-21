@@ -4,106 +4,216 @@
   <div class="text-left">
     <h2><b>REGULAR USER DASHBOARD</b></h2>
   </div>
-</div>
-<br />
-<div class="container">
-  <div class="row-sm-4">
+  <div>{% for message in messages %} {{message}} {% endfor %}</div>
+  <div
+    class="events-participated mt-5"
+    style="max-height: 300px; overflow: auto"
+  >
     <div class="text-left">
       <h3 class="font-weight-bold text-dark">EVENTS PARTICIPATED</h3>
     </div>
-    <div class="table">
-      <table class="table table-bordered" width="90%" cellspacing="3">
-        <thead style="text-align: center">
-          <tr style="background-color: #c1e3f2; color: black">
-            <th>Title</th>
-            <th>Type</th>
-            <th>Description</th>
-            <th>Date Time Start</th>
-            <th>Date Time End</th>
-            <th>Review</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr style="text-align: center">
-            <td>Title</td>
-            <td>Type</td>
-            <td>Description</td>
-            <td>Date Time Start</td>
-            <td>Date Time End</td>
-            <td>
-              <center>
-                <div class="text-center">
-                  <button type="submit" class="btn btn-primary">Upvote</button>
-                  <button type="submit" class="btn btn-primary">Comment</button>
-                </div>
-              </center>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>
-<br />
-<div class="container">
-  <div class="row-sm-4">
-    <div align="right">
-      <button type="button" class="btn btn-primary">
-        Request To Become Organizer
-      </button>
-    </div>
-    <div class="text-left">
-      <h3 class="font-weight-bold text-dark">EVENTS</h3>
-    </div>
+    <table
+      class="table table-bordered mt-2"
+      id="id-events-participated"
+      width="90%"
+      cellspacing="3"
+    >
+      <thead style="text-align: center">
+        <tr style="background-color: #c1e3f2; color: black">
+          <th>Title</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Date Time Start</th>
+          <th>Date Time End</th>
+          <th>Review</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="text-align: center">
+          <td>Title</td>
+          <td>Type</td>
+          <td>Description</td>
+          <td>Date Time Start</td>
+          <td>Date Time End</td>
+          <td>
+            <center>
+              <div class="text-center">
+                <button
+                  type="submit" 
+                  class="btn btn-primary"
+                  data-bs-toggle="modal"
+                  data-bs-target="#ModalUpvote"
+                  >Upvote
+                </button>
 
-    <div class="table">
-      <table class="table table-bordered" width="90%" cellspacing="3">
-        <thead style="text-align: center">
-          <tr style="background-color: #c1e3f2; color: black">
-            <th>Title</th>
-            <th>Type</th>
-            <th>Description</th>
-            <th>Date Time Start</th>
-            <th>Date Time End</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for event in events %}
-          <tr style="text-align: center">
-            <td>{{event.title}}</td>
-            <td>{{event.type}}</td>
-            <td>{{event.description}}</td>
-            <td>{{event.datetime_start}}</td>
-            <td>{{event.datetime_end}}</td>
-            <td>
-              <center>
-                <div class="text-center">
-                  <form method="POST" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    <input
-                      type="number"
-                      name="event-id"
-                      value="{{event.id}}"
-                      hidden
-                    />
+                <div
+                  class="modal fade"
+                  id="ModalUpvote"
+                  tabindex="-1"
+                  aria-labelledby="exampleModalLabel"
+                  aria-hidden="true"
+                >
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">Give Upvote</h5>
+                      <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                      ></button>
+                    </div>
+                    <form method="post">
+                      {% csrf_token %}
+                      <div class="modal-body">
+                        <div class="text-start">
+                          Give upvote to the event you participated.
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button
+                          type="button"
+                          class="btn btn-secondary"
+                          data-bs-dismiss="modal"
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          type="submit"
+                          name="requestToBecomeOrg"
+                          class="btn btn-primary"
+                        >
+                          Confirm
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Comment</button>
+              </div>
+            </center>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="events-list mt-5" style="max-height: 300px; overflow: auto">
+    <div class="d-flex justify-content-between">
+      <h3 class="font-weight-bold text-dark">EVENTS</h3>
+      <div id="becomeAnOrganizer">
+        <div align="right">
+          <button
+            type="button"
+            class="btn btn-primary"
+            data-bs-toggle="modal"
+            data-bs-target="#ModalRequestToJoin"
+          >
+            Request To Become Organizer
+          </button>
+
+          <div
+            class="modal fade"
+            id="ModalRequestToJoin"
+            tabindex="-1"
+            aria-labelledby="exampleModalLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Request To Become Organizer</h5>
+                  <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  ></button>
+                </div>
+                <form method="post">
+                  {% csrf_token %}
+                  <div class="modal-body">
+                    <div class="text-start">
+                      Are you sure you want to become an event organizer?
+                    </div>
+                  </div>
+                  <div class="modal-footer">
                     <button
-                      name="requestToJoin"
+                      type="button"
+                      class="btn btn-secondary"
+                      data-bs-dismiss="modal"
+                    >
+                      Cancel
+                    </button>
+                    <button
                       type="submit"
+                      name="requestToBecomeOrg"
                       class="btn btn-primary"
                     >
-                      Request to join
+                      Confirm
                     </button>
-                  </form>
-                </div>
-              </center>
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+    <table
+      class="table table-bordered mt-2"
+      id="id-events-list"
+      width="90%"
+      cellspacing="3"
+    >
+      <thead style="text-align: center">
+        <tr style="background-color: #c1e3f2; color: black">
+          <th>Title</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Date Time Start</th>
+          <th>Date Time End</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for event in events %}
+        <tr style="text-align: center">
+          <td>{{event.title}}</td>
+          <td>{{event.type}}</td>
+          <td>{{event.description}}</td>
+          <td>{{event.datetime_start}}</td>
+          <td>{{event.datetime_end}}</td>
+          <td>
+            <center>
+              <div class="text-center">
+                <form method="POST" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  <input
+                    type="number"
+                    name="event-id"
+                    value="{{event.id}}"
+                    hidden
+                  />
+                  <button
+                    name="requestToJoin"
+                    type="submit"
+                    class="btn btn-primary"
+                    data-toggle="modal"
+                    data-target="#modalRequestToJoin"
+                  >
+                    Request to join
+                  </button>
+                </form>
+              </div>
+            </center>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
   </div>
 </div>
-
 {% endblock content %}

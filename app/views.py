@@ -70,8 +70,9 @@ class RegistrationView(View):
     if form.is_valid():
       form.save()
       return redirect('app:login')
-    print(form.errors)
-    return HttpResponse("error!")
+    messages.info(request, 'Your password must be between 8 and 30 characters.')
+    messages.info(request, 'Your password must contain at least one uppercase, numeric and special character.')
+    return redirect('app:registration')
 
 class RegularUserView(View):
   def get(self, request):
@@ -86,53 +87,93 @@ class RegularUserView(View):
       elif currentUser.is_staff:
         return redirect('app:organizer')
       else:
-        return HttpResponse("wrong na")
+        return redirect('app:login')
     return render(request, 'app/home.html')
 
   def post(self, request):
     if 'requestToJoin' in request.POST:
       print(request.POST.get('event-id'))
       return redirect('app:user')
+    elif 'requestToBecomeOrg' in request.POST:
+      print(request.user.id)
+      req = Request.objects.filter(user = request.user, requestType = "Promote to Organizer")
+      if req:
+        messages.info(request, "You have already requested to become an organizer.")
+        return redirect('app:user')
+      reqOrg = Request.objects.create(user = request.user, requestType = "Promote to Organizer")
+      
+      messages.info(request, "You have requested to become an organizer, you will be redicted to an organizer page once you are a organizer.")
+      return redirect('app:user')
+
 
 class CreateEventView(View):
   def get(self,request):
-    context = {}
-    return render(request, 'app/createEvent.html', context)
+    # form = CreateEventForm()
+    # context = {'form':form}
+    return render(request, 'app/createEvent.html')
   
   def post(self, request):
     form = CreateEventForm(request.POST)
+    print(form.is_valid())
     if form.is_valid():
-      title = request.POST.get("eventtitle")
-      type = request.POST.get("eventtype")
-      description = request.POST.get("description")
-      datetime_start = request.POST.get("startdate")
-      datetime_end = request.POST.get("enddate")
-      # upvotes = 
-      # participants = 
+      # title = request.POST.get("eventtitle")
+      # type = request.POST.get("eventtype")
+      # description = request.POST.get("description")
+      # datetime_start = request.POST.get("startdate")
+      # datetime_end = request.POST.get("enddate")
+      # # upvotes = 
+      # # participants = 
 
-      form = Event(title = title, type = type, description = description, datetime_start = datetime_start, datetime_end = datetime_end)
+      # form = Event(title = title, type = type, description = description, datetime_start = datetime_start, datetime_end = datetime_end)
       
       form.save()
 
       print("Event successfully created.")
-      return HttpResponse('success')
+      return HttpResponse('Event successfully created.')
+      # return redirect('app:admin')
 
     else:
-      return HttpResponse('error')
+      print(form.errors)
+      return redirect('app:create_event')
 
 class AdminDashboardView(View):
   def get(self, request):
     if request.user.is_authenticated:
       currentUser = request.user
       if currentUser.is_superuser:
-        return render(request, 'app/adminDashboard.html')
+        req = Request.objects.filter(requestType = "Promote to Organizer", status = "For Review")
+        events = Event.objects.all()
+        users = User.objects.all()
+        context = {
+          'requests' : req,
+          'events': events,
+          'users': users,
+        }
+        return render(request, 'app/adminDashboard.html', context)
       elif not currentUser.is_staff:
         return redirect('app:user')
       elif currentUser.is_staff:
         return redirect('app:organizer')
       else:
-        return HttpResponse("wrong na")
-    return HttpResponse("wrong na")
+        return redirect('app:login')
+    return redirect('app:login')
+
+  def post(self, request):
+    if 'acceptOrg' in request.POST:
+      print("hello", request.POST.get("request-id"))
+      req = Request.objects.get(id = request.POST.get("request-id"))
+      req.status = "Accepted"
+      user = req.user
+      user.is_staff = True
+      req.save()
+      user.save()
+      print(user)
+    if 'denyOrg' in request.POST:
+      print("world")
+      req = Request.objects.get(id = request.POST.get("request-id"))
+      req.status = "Denied"
+      req.save()
+    return redirect('app:admin')
 
 
 class OrgDashboardView(View):
@@ -154,11 +195,11 @@ class OrgDashboardView(View):
       # DO NOT DELETE THIS -----------------------------------
       print('yay')
       if currentUser.is_superuser:
-          return redirect('app:administrator')
+          return redirect('app:admin')
       elif not currentUser.is_staff:
         return redirect('app:user')
       elif currentUser.is_staff:
         return render (request, 'app/orgDashboard.html')
       else:
-        return HttpResponse("wrong na")
-    return HttpResponse("wrong na")
+        return redirect('app:login')
+    return redirect('app:login')
