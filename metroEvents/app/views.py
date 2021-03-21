@@ -4,7 +4,7 @@ from django.views.generic import View
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
-from .forms import CreateUserForm, CreateEventForm
+from .forms import CreateUserForm
 from django.template import RequestContext, context
 from django.contrib import messages
 from datetime import datetime, date
@@ -105,36 +105,44 @@ class RegularUserView(View):
       messages.info(request, "You have requested to become an organizer, you will be redicted to an organizer page once you are a organizer.")
       return redirect('app:user')
 
-
 class CreateEventView(View):
-  def get(self,request):
-    # form = CreateEventForm()
-    # context = {'form':form}
+  def get(self, request):
+    if request.user.is_authenticated:
+      currentUser = request.user
+      title = request.POST.get('eventtitle')
+      type = request.POST.get('eventtype')
+      description = request.POST.get('description')
+      datetime_start = request.POST.get('startdate')
+      datetime_end = request.POST.get('enddate')
+
+      event = Event.objects.create(title = title, type = type, description = description, datetime_start = datetime_start, datetime_end= datetime_end)
+      print('yay')
+     
     return render(request, 'app/createEvent.html')
   
-  def post(self, request):
-    form = CreateEventForm(request.POST)
-    print(form.is_valid())
-    if form.is_valid():
-      # title = request.POST.get("eventtitle")
-      # type = request.POST.get("eventtype")
-      # description = request.POST.get("description")
-      # datetime_start = request.POST.get("startdate")
-      # datetime_end = request.POST.get("enddate")
-      # # upvotes = 
-      # # participants = 
+  # def post(self, request):
+  #   form = CreateEventForm(request.POST)
+  #   print(form.is_valid())
+  #   if form.is_valid():
+  #     # title = request.POST.get("eventtitle")
+  #     # type = request.POST.get("eventtype")
+  #     # description = request.POST.get("description")
+  #     # datetime_start = request.POST.get("startdate")
+  #     # datetime_end = request.POST.get("enddate")
+  #     # # upvotes = 
+  #     # # participants = 
 
-      # form = Event(title = title, type = type, description = description, datetime_start = datetime_start, datetime_end = datetime_end)
+  #     # form = Event(title = title, type = type, description = description, datetime_start = datetime_start, datetime_end = datetime_end)
       
-      form.save()
+  #     form.save()
 
-      print("Event successfully created.")
-      return HttpResponse('Event successfully created.')
-      # return redirect('app:admin')
+  #     print("Event successfully created.")
+  #     return HttpResponse('Event successfully created.')
+  #     # return redirect('app:admin')
 
-    else:
-      print(form.errors)
-      return redirect('app:create_event')
+  #   else:
+  #     print(form.errors)
+  #     return redirect('app:create_event')
 
 class AdminDashboardView(View):
   def get(self, request):
