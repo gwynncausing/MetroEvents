@@ -53,53 +53,114 @@
                   aria-labelledby="exampleModalLabel"
                   aria-hidden="true"
                 >
-                <div class="modal-dialog">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title">Give Upvote</h5>
-                      <button
-                        type="button"
-                        class="btn-close"
-                        data-bs-dismiss="modal"
-                        aria-label="Close"
-                      ></button>
-                    </div>
-                    <form method="post">
-                      {% csrf_token %}
-                      <div class="modal-body">
-                        <div class="text-start">
-                          Give upvote or rating to the event you participated. <br>
-
-                         &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp&nbsp &nbsp&nbsp &nbsp&nbsp &nbsp<input type="radio" id="upvote" name="vote" value="upvote">
-                            <label for="upvote">UPVOTE</label>
-                          &nbsp &nbsp&nbsp &nbsp&nbsp &nbsp&nbsp &nbsp&nbsp &nbsp<input type="radio" id="downvote" name="vote" value="downvote">
-                            <label for="downvote">DOWNVOTE</label><br>
-                           
-                        </div>
-                       
-                      </div>
-
-                      <div class="modal-footer">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Give Upvote</h5>
                         <button
                           type="button"
-                          class="btn btn-secondary"
+                          class="btn-close"
                           data-bs-dismiss="modal"
-                        >
-                          Cancel
-                        </button>
-                        <button
-                          type="submit"
-                          name="requestToBecomeOrg"
-                          class="btn btn-primary"
-                        >
-                          Confirm
-                        </button>
+                          aria-label="Close"
+                        ></button>
                       </div>
-                    </form>
+                      <form method="post">
+                        {% csrf_token %}
+                        <div class="modal-body">
+                          <div class="text-start">
+                            Give upvote or rating to the event you participated. <br>
+
+                          &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp&nbsp &nbsp&nbsp &nbsp&nbsp &nbsp<input type="radio" id="upvote" name="vote" value="upvote">
+                              <label for="upvote">UPVOTE</label>
+                            &nbsp &nbsp&nbsp &nbsp&nbsp &nbsp&nbsp &nbsp&nbsp &nbsp<input type="radio" id="downvote" name="vote" value="downvote">
+                              <label for="downvote">DOWNVOTE</label><br>
+                            
+                          </div>
+                        
+                        </div>
+
+                        <div class="modal-footer">
+                          <button
+                            type="button"
+                            class="btn btn-secondary"
+                            data-bs-dismiss="modal"
+                          >
+                            Cancel
+                          </button>
+                          <button
+                            type="submit"
+                            name="submitUpvote"
+                            class="btn btn-primary"
+                          >
+                           Submit
+                          </button>
+                        </div>
+                      </form>
+                    </div>
                   </div>
                 </div>
+                
+                <button
+                  type="submit" 
+                  class="btn btn-primary"
+                  data-bs-toggle="modal"
+                  data-bs-target="#ModalComment"
+                  >Comment
+                </button>
+
+                <div
+                  class="modal fade"
+                  id="ModalComment"
+                  tabindex="-1"
+                  aria-labelledby="exampleModalLabel"
+                  aria-hidden="true"
+                >
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Give Comment</h5>
+                        <button
+                          type="button"
+                          class="btn-close"
+                          data-bs-dismiss="modal"
+                          aria-label="Close"
+                        >
+                        </button>
+                      </div>
+                      <form method="post">
+                        {% csrf_token %}
+                        <div class="modal-body">
+                          <div class="text-start">
+                            How was the event? Give us your thoughts. <br> <br> 
+                          </div>
+                          <form action="/html/tags/html_form_tag_action.cfm" method="post">
+                            <div>
+                             <textarea name="comments" id="comments" style="font-family:sans-serif;font-size:1em; height: 150px; width: 400px;"> Hey... say something!</textarea>
+                            </div>
+                          </form>
+                        
+                        </div>
+
+                        <div class="modal-footer">
+                          <button
+                            type="button"
+                            class="btn btn-secondary"
+                            data-bs-dismiss="modal"
+                          >
+                            Cancel
+                          </button>
+                          <button
+                            type="submit"
+                            name="submitComment"
+                            class="btn btn-primary"
+                          >
+                            Submit
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
                 </div>
-                <button type="submit" class="btn btn-primary">Comment</button>
               </div>
             </center>
           </td>
@@ -117,14 +178,14 @@
             type="button"
             class="btn btn-primary"
             data-bs-toggle="modal"
-            data-bs-target="#ModalRequestToJoin"
+            data-bs-target="#ModalRequestToBeOrg"
           >
             Request To Become Organizer
           </button>
 
           <div
             class="modal fade"
-            id="ModalRequestToJoin"
+            id="ModalRequestToBeOrg"
             tabindex="-1"
             aria-labelledby="exampleModalLabel"
             aria-hidden="true"
@@ -205,6 +266,7 @@
                     value="{{event.id}}"
                     hidden
                   />
+                  
                   <button
                     name="requestToJoin"
                     type="submit"
@@ -214,6 +276,50 @@
                   >
                     Request to join
                   </button>
+                  <div
+                    class="modal fade"
+                    id="modalRequestToJoin"
+                    tabindex="-1"
+                    aria-labelledby="exampleModalLabel"
+                    aria-hidden="true"
+                  >
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <button
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                          ></button>
+                        </div>
+                        <form method="post">
+                          {% csrf_token %}
+                          <div class="modal-body">
+                            <div class="text-start">
+                              Your request to join the event is sent.
+                            </div>
+                          </div>
+                          <div class="modal-footer">
+                            <button
+                              type="button"
+                              class="btn btn-secondary"
+                              data-bs-dismiss="modal"
+                            >
+                              Cancel
+                            </button>
+                            <button
+                              type="submit"
+                              name="requestToBecomeOrg"
+                              class="btn btn-primary"
+                            >
+                              Confirm
+                            </button>
+                          </div>
+                        </form>
+                      </div>
+                    </div> 
+                  </div>
                 </form>
               </div>
             </center>
