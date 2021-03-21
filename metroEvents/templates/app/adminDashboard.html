@@ -29,19 +29,26 @@
           <tr style="text-align: center">
             <th class="th-sm">ID</th>
             <th class="th-sm">Date Registered</th>
-            <th class="th-sm">Firstname</th>
-            <th class="th-sm">Lastname</th>
+            <th class="th-sm">Username</th>
+            <th class="th-sm">User Type</th>
           </tr>
         </thead>
 
         <tbody id="id-users-table">
-          <!--  backend code here -->
+          {% for user in users %}
           <tr style="text-align: center">
-            <td><!--  backend code here --></td>
-            <td><!--  backend code here --></td>
-            <td><!--  backend code here --></td>
-            <td><!--  backend code here --></td>
+            <td>{{user.id}}</td>
+            <td>{{user.date_joined}}</td>
+            <td>{{user.username}}</td>
+            {% if user.is_superuser %}
+            <td>Admin</td>
+            {% elif user.is_staff %}
+            <td>Organizer</td>
+            {% else %}
+            <td>Regular User</td>
+            {% endif %}
           </tr>
+          {% endfor %}
         </tbody>
 
         <tfoot>
@@ -83,20 +90,22 @@
       >
         <thead>
           <tr style="text-align: center">
-            <th class="th-sm">Event Title</th>
-            <th class="th-sm">Event Type</th>
+            <th class="th-sm">Title</th>
+            <th class="th-sm">Type</th>
+            <th class="th-sm">Description</th>
             <th class="th-sm">Start Date</th>
             <th class="th-sm">End Date</th>
             <th class="th-sm">Action</th>
           </tr>
         </thead>
         <tbody id="id-events-table">
-          <!--  backend code here -->
+          {% for event in events %}
           <tr style="text-align: center">
-            <td><!--  backend code here --></td>
-            <td><!--  backend code here --></td>
-            <td><!--  backend code here --></td>
-            <td><!--  backend code here --></td>
+            <td>{{event.title}}</td>
+            <td>{{event.type}}</td>
+            <td>{{event.description}}</td>
+            <td>{{event.datetime_start}}</td>
+            <td>{{event.datetime_end}}</td>
             <td>
               <button
                 type="button"
@@ -116,7 +125,7 @@
               </button>
             </td>
           </tr>
-
+          {% endfor %}
           <!-- Modal View-->
           <div
             class="modal fade"
@@ -334,7 +343,7 @@
 
         <tbody id="id-orgRequest-table">
           <!--  backend code here -->
-          {% for request in requests %}
+          {% if requests %} {% for request in requests %}
           <tr style="text-align: center">
             <td>{{request.id}}</td>
             <td>{{request.user}}</td>
@@ -371,7 +380,14 @@
               </div>
             </td>
           </tr>
-          {% endfor %}
+          {% endfor %} {% else %}
+          <tr style="text-align: center">
+            <td>No Requests</td>
+            <td>No Requests</td>
+            <td>No Requests</td>
+            <td>No Requests</td>
+          </tr>
+          {% endif %}
         </tbody>
 
         <tfoot>

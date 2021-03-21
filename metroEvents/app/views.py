@@ -141,7 +141,13 @@ class AdminDashboardView(View):
       currentUser = request.user
       if currentUser.is_superuser:
         req = Request.objects.filter(requestType = "Promote to Organizer", status = "For Review")
-        context = {'requests' : req}
+        events = Event.objects.all()
+        users = User.objects.all()
+        context = {
+          'requests' : req,
+          'events': events,
+          'users': users,
+        }
         return render(request, 'app/adminDashboard.html', context)
       elif not currentUser.is_staff:
         return redirect('app:user')
