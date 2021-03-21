@@ -2,12 +2,21 @@
 
 <div class="form-group">
   <div class="container">
+    
     <div
       class="d-flex justify-content-center"
       style="background-color: lightcyan"
     >
       <h2><b>CREATE EVENT</b></h2>
     </div>
+    <form
+      id="form1"
+      action=""
+      method="POST"
+      autocomplete="off"
+      enctype="multipart/form-data"
+    >
+      {% csrf_token %}
     <div class="row mt-4">
       <div class="col-sm-6">
         <label>Event Title</label>
@@ -42,15 +51,15 @@
     <div class="row">
       <div class="col-sm-12">
         <label>Description</label>
-        <textarea
+        <input
+          type="text"
           name="description"
           id="id-description"
           class="form-control"
-          cols="30"
-          rows="5"
+          
           required
-          style="resize: none"
-        ></textarea>
+        
+        ></input>
       </div>
     </div>
     <br />
@@ -79,14 +88,7 @@
 
     <br /><br />
 
-    <form
-      id="form1"
-      action=""
-      method="POST"
-      autocomplete="off"
-      enctype="multipart/form-data"
-    >
-      {% csrf_token %}
+    
       <div class="d-flex justify-content-evenly">
         <button type="reset" value="reset" class="btn btn-secondary">
           Cancel
