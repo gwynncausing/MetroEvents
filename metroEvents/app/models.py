@@ -24,8 +24,8 @@ class Address(models.Model):
 
 class Event(models.Model):
     # organizer = models.ForeignKey(User, on_delete=models.CASCADE, null = True, blank = True)
-    title = models.CharField(max_length = 45)
-    type = models.CharField(max_length = 45)
+    title = models.CharField(max_length = 45, blank = True, null = True)
+    type = models.CharField(max_length = 45, blank = True, null = True)
     description = models.CharField(max_length = 100)
     datetime_start = models.DateField(default = timezone.now, blank = True)
     datetime_end = models.DateField(default = timezone.now, blank = True)
