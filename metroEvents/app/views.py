@@ -70,8 +70,9 @@ class RegistrationView(View):
     if form.is_valid():
       form.save()
       return redirect('app:login')
-    print(form.errors)
-    return HttpResponse("error!")
+    messages.info(request, 'Your password must be between 8 and 30 characters.')
+    messages.info(request, 'Your password must contain at least one uppercase, numeric and special character.')
+    return redirect('app:registration')
 
 class RegularUserView(View):
   def get(self, request):
@@ -86,7 +87,7 @@ class RegularUserView(View):
       elif currentUser.is_staff:
         return redirect('app:organizer')
       else:
-        return HttpResponse("wrong na")
+        return redirect('app:login')
     return render(request, 'app/home.html')
 
   def post(self, request):
@@ -154,8 +155,8 @@ class AdminDashboardView(View):
       elif currentUser.is_staff:
         return redirect('app:organizer')
       else:
-        return HttpResponse("wrong na")
-    return HttpResponse("wrong na")
+        return redirect('app:login')
+    return redirect('app:login')
 
   def post(self, request):
     if 'acceptOrg' in request.POST:
@@ -200,5 +201,5 @@ class OrgDashboardView(View):
       elif currentUser.is_staff:
         return render (request, 'app/orgDashboard.html')
       else:
-        return HttpResponse("wrong na")
-    return HttpResponse("wrong na")
+        return redirect('app:login')
+    return redirect('app:login')

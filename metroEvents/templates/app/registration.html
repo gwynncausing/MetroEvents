@@ -113,6 +113,11 @@
           class="form-control"
         />
       </div>
+      <div>
+        {% for message in messages %}
+        <div>{{message}}</div>
+        {% endfor %}
+      </div>
       <div class="mb-3 d-flex justify-content-between">
         <a class="mt-2" href="{% url 'app:login' %}">
           I already have an account
