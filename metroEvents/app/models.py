@@ -3,6 +3,7 @@ from django.utils import timezone
 import datetime
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import User
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
 # Create your models here.
 
@@ -15,24 +16,9 @@ class Address(models.Model):
     def __str__(self):
         return self.barangay + ", " + self.city + ", " + self.province
 
-# class MyUser(User):
-#     USER_TYPE = (
-#         ('Regular', 'Regular'),
-#         ('Organizer', 'Organizer'),
-#         ('Admin', 'Admin'),
-#     )
-    
-#     # first_name = models.CharField(max_length = 50, null = True, blank = True)
-#     # last_name = models.CharField(max_length = 50, null = True, blank = True)
-#     # username = models.CharField(max_length = 30, unique = True, null = True)
-#     # password = models.TextField(default = "123")
-#     # email = models.CharField(max_length = 40, null = True)
-#     # date_joined = models.DateField(auto_now_add = True, null = True)
-#     # address =  models.ForeignKey(Address, on_delete=models.SET_NULL, null = True, blank = True)
-#     usertype = models.CharField(max_length = 30, null = True, choices = USER_TYPE, default = "Regular")
-
-#     USERNAME_FIELD = 'username'
-
+# class MyUser(BaseUserAdmin):
+#     requests = models.ManyToManyField(Requests, blank = True)
+#     events = models.ManyToManyField(Events, blank = True)
 #     def __str__(self):
 #         return self.username
 
@@ -43,7 +29,7 @@ class Event(models.Model):
     description = models.CharField(max_length = 100)
     datetime_start = models.DateField(default = timezone.now, blank = True)
     datetime_end = models.DateField(default = timezone.now, blank = True)
-    # upvotes = models.IntegerField(default = 0, blank = True, null = True)
+    upvotes = models.IntegerField(default = 0, blank = True, null = True)
     
     participants = models.ManyToManyField(User, blank = True)
     
@@ -61,13 +47,14 @@ class Request(models.Model):
         ('Accepted', 'Accepted'),
         ('Denied', 'Denied'),
     )
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null = True, blank = True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null = True, blank = True, related_name = "+")
     requestType = models.CharField(max_length = 30, null = True, choices = REQUEST_TYPE, default = "Join Event")
-    title = models.CharField(max_length = 45)
-    description = models.CharField(max_length = 100)
+    # title = models.CharField(max_length = 45)
+    # description = models.CharField(max_length = 100)
     status = models.CharField(max_length = 30, null = True, choices = REQUEST_STATUS, default = "For Review")
     datetime_request = models.DateTimeField(auto_now_add = True, blank = True)
     datetime_reply = models.DateTimeField(blank = True, null = True)
+    replied_by = models.ForeignKey(User, on_delete=models.SET_NULL, null = True, blank = True, related_name = "+")
 
     def __str__(self):
         return self.requestType + " - " + str(self.id)
@@ -75,7 +62,6 @@ class Request(models.Model):
 class Organizer(models.Model):
     organizer = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True, default = 0)
     datePromoted = models.DateField(auto_now_add = True, blank = True)
-    request = models.ManyToManyField(Request, blank = True)
     event = models.ManyToManyField(Event, blank = True)
 
     def __str__(self):
@@ -84,7 +70,6 @@ class Organizer(models.Model):
 class Administrator(models.Model):
     admin = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True, default = 0)
     datePromoted = models.DateField(auto_now_add = True, blank = True)
-    request = models.ManyToManyField(Request, blank = True)
 
     def __str__(self):
         return self.admin_id.username

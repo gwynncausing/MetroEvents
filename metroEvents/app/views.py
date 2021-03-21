@@ -93,6 +93,17 @@ class RegularUserView(View):
     if 'requestToJoin' in request.POST:
       print(request.POST.get('event-id'))
       return redirect('app:user')
+    elif 'requestToBecomeOrg' in request.POST:
+      print(request.user.id)
+      req = Request.objects.filter(user = request.user, requestType = "Promote to Organizer")
+      if req:
+        messages.info(request, "You have already requested to become an organizer.")
+        return redirect('app:user')
+      reqOrg = Request.objects.create(user = request.user, requestType = "Promote to Organizer")
+      
+      messages.info(request, "You have requested to become an organizer, you will be redicted to an organizer page once you are a organizer.")
+      return redirect('app:user')
+
 
 class CreateEventView(View):
   def get(self,request):
@@ -129,7 +140,9 @@ class AdminDashboardView(View):
     if request.user.is_authenticated:
       currentUser = request.user
       if currentUser.is_superuser:
-        return render(request, 'app/adminDashboard.html')
+        req = Request.objects.filter(requestType = "Promote to Organizer", status = "For Review")
+        context = {'requests' : req}
+        return render(request, 'app/adminDashboard.html', context)
       elif not currentUser.is_staff:
         return redirect('app:user')
       elif currentUser.is_staff:
@@ -137,6 +150,23 @@ class AdminDashboardView(View):
       else:
         return HttpResponse("wrong na")
     return HttpResponse("wrong na")
+
+  def post(self, request):
+    if 'acceptOrg' in request.POST:
+      print("hello", request.POST.get("request-id"))
+      req = Request.objects.get(id = request.POST.get("request-id"))
+      req.status = "Accepted"
+      user = req.user
+      user.is_staff = True
+      req.save()
+      user.save()
+      print(user)
+    if 'denyOrg' in request.POST:
+      print("world")
+      req = Request.objects.get(id = request.POST.get("request-id"))
+      req.status = "Denied"
+      req.save()
+    return redirect('app:admin')
 
 
 class OrgDashboardView(View):
@@ -158,7 +188,7 @@ class OrgDashboardView(View):
       # DO NOT DELETE THIS -----------------------------------
       print('yay')
       if currentUser.is_superuser:
-          return redirect('app:administrator')
+          return redirect('app:admin')
       elif not currentUser.is_staff:
         return redirect('app:user')
       elif currentUser.is_staff:
