@@ -118,7 +118,7 @@ class RegularUserView(View):
       elif btnradio == "downvote":
         event.upvotes = event.upvotes - 1
         event.save()
-      return redirect('app:user')
+      messages.info(request, 'Upvote submitted successfully!')
     elif 'submitComment' in request.POST:
       myeventid = request.POST.get('myevent-id')
       event = Event.objects.get(id = myeventid)
@@ -130,7 +130,7 @@ class RegularUserView(View):
       review = Review.objects.create(title = title, comments = comments)
       event.review.add(review)
       event.save()
-
+      messages.info(request, 'Review submitted successfully!')
     return redirect('app:user')
 
 

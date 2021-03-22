@@ -1,360 +1,351 @@
 {% extends 'base.html' %} {% load static %} {% block content %}
 
 <!-- scripts for search bars -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
 
-	<div class="container">
-		<div class="jumbotron text-center" style="background-color:#A5DFED;">
-		  <h2><b>ORGANIZER DASHBOARD</b></h2>
-		</div>
-	</div>
-	<br>
-	<div class="container">
-		<div class="row-sm-4">
-			<div class="text-left">
-				<div class="mb-3">
-					<h3><b>My Events</b></h3>
-				</div>
-				<table 
-					id="id-orgevents-list"
-					class="table table-striped table-bordered table-sm table-hover"
-					cellspacing="0"
-					width="100%"
-					style="background-color: #e9fbff"
-				>
-					<div>
-						<form
-							id="form1"
-							action=""
-							method="POST"
-							autocomplete="off"
-							enctype="multipart/form-data"
-						>
-							{% csrf_token %}
-							<p align="right">
-								<button
-									type="button"
-									class="btn btn-primary"
-									id="id-CreateEventBtn"
-									name = "CreateEventBtn"
-								>
-								Create Event
-								</button>
-							</p>   
-						</form>
-					</div>
-					<input
-						class="form-control"
-						id="id-event-input"
-						type="text"
-						placeholder="Search"
-					/>
-					<thead>
-						 <tr style = "text-align: center">
-							 <th class="th-sm">Event Title</th>
-							 <th class="th-sm">Event Type</th>
-							 <th class="th-sm">Start Date</th>
-							 <th class="th-sm">End Date</th>
-							 <th class="th-sm">Action</th>
-						 </tr>
-					 </thead>
-					 <tbody id = "id-orgEvents-table">
-						 <!--  backend code here -->
-							<tr style = "text-align: center">
-							  <td><!--  backend code here --></td>
-							  <td><!--  backend code here --></td>
-							  <td><!--  backend code here --></td>
-							  <td><!--  backend code here --></td>
-							  <td>
-								 <button
-								 	type="button"
-									class="btn btn-primary"
-									data-toggle="modal"
-									data-target="#ModalView"
-								>
-								View
-								</button>
-								<button
-									type="submit"
-									class="btn btn-primary"
-									data-toggle="modal"
-									data-target="#ModalDelete"
-								>
-								Delete
-								</button>
-							  </td>
-							</tr>
-								
-							<!-- Modal View-->
-								<div
-									class="modal fade"
-									id="ModalViewEvent"
-									tabindex="-1"
-									role="dialog"
-									aria-labelledby="exampleModalLabel"
-									aria-hidden="true"
-								>
-									<div class="modal-dialog" role="document">
-										<div class="modal-content">
-											<div class="modal-header">
-												 <h2 class="modal-title" id="id-modalEvent-view">Update Event</h2>
-												 <button
-												 	type="button"
-													class="close"
-													data-dismiss="modal"
-													aria-label="Close"
-												 > 
-													  <span aria-hidden="true">&times;</span>
-												 </button>
-											 </div>	
-	 
-											 <form id="UpdateEventForm" method="POST">
-											 {% csrf_token %}
-	 
-											 <div class="modal-body">
-												<div class = "row mt-4">
-													<div class = "col-sm-6">
-														<label>Event Title</label>
-														<input
-															type="text"
-															class="form-control"
-															id="id-event-title"
-															name = "eventtitle"
-															placeholder="Event Title"
-															required="required"
-														>
-													</div>	
-													<div class = "col-sm-6">
-														<label>Event Type</label>
-														<select
-															name = "eventtype"
-															id = "id-event-type"
-															class="form-select form-select-md"
-															aria-label=".form-select-md example"
-														>
-															<option selected>Open this select menu</option>
-															<option value="1">Trail Biking</option>
-															<option value="2">Basketball</option>
-															<option value="3">Zumba</option>
-															<option value="3">Univercity</option>
-															<option value="3">Run-for-a-cause</option>
-														</select>
-													</div>
-												</div>
-												<br>
-												<div class = "row">
-													<div class =  "col-sm-12">
-														<label>Description</label>
-														<textarea
-															name="description"
-															id="id-description"
-															class="form-control"
-															cols="30"
-															rows="5"
-															required style="resize: none;" 
-														>
-														</textarea>
-													</div>	
-												</div>
-												<br>
-												<div class = "row">
-													<div class = "col-sm-5">
-														<label>Start Date</label>
-														<input
-															type="date"
-															class="form-control"
-															id="id-start-date"
-															name ="startdate"
-															required="required"
-														>
-													</div>
-													<div class = "col-sm-5">
-														<label>End Date</label>
-														<input
-															type="date"
-															class="form-control"
-															id="id-end-date"
-															name ="enddate"
-															required="required"
-														>
-													</div>
-													<div class = "col-sm-2">
-														<label>Upvotes</label>
-														<input
-															type="text"
-															class="form-control"
-															id="id-upvotes"
-															name ="upvotes"
-														>
-													</div>
-												</div>
-											 </div>	<!--modal-body-->
-	 
-											 <div class="modal-footer">
-												 <button 
-												 	type="button"
-													class="btn btn-secondary"
-													data-dismiss="modal"
-												 >
-												 Cancel
-												</button>
-												 <button
-												 	type="submit"
-													id="UpdateBtn"
-													name="UpdateBtn"
-													class="btn btn-primary"
-												 >
-												 Update
-												</button>
-											 </div>
-	 
-											 </form>
-										 </div>
-									 </div>
-								 	</div> <!-- Modal View Ends -->
-	 
-								 <!-- Modal Delete -->
-								 <div
-								 	class="modal fade"
-									id="ModalDelete"
-									tabindex="-1"
-									role="dialog"
-									aria-labelledby="exampleModalLabel"
-									aria-hidden="true"
-								 >
-									 <div class="modal-dialog" role="document">
-										 <div class="modal-content">
-											 <div class="modal-header">
-												 <h2 class="modal-title" id="id-modal-delete">DELETE EVENT</h2>
-												 <button
-												 	type="button"
-													class="close"
-													data-dismiss="modal"
-													aria-label="Close"
-												 >
-												   <span aria-hidden="true">&times;</span>
-												 </button>
-											 </div>
-	 
-											   <form id="DeleteEventForm" method="post">
-											 {% csrf_token %} 
-											   
-											 	<div class="modal-body">
-													<input
-													 	type="text"
-													 	name="eventID"
-													 	hidden
-												 	>
-												  Are you sure you want to delete this customer?
-											 	</div>
-	 
-												 <div class="modal-footer">
-													<button
-													 	type="button"
-														class="btn btn-secondary"
-														data-dismiss="modal"
-													>
-													No
-													</button>
-													<button
-														type="submit"
-														id = "DeleteBtn"
-														name = "DeleteBtn"
-														class="btn btn-primary"
-													>
-													Yes
-													</button>
-												 </div>
-											 </form>
-										  </div>
-										</div>
-								 </div> <!-- Modal Delete Ends -->
-						 </tbody>
-	 
-						 <tfoot>
-							 <tr style="text-align: center">
-								 <th class="th-sm">Event Title</th>
-								 <th class="th-sm">Event Type</th>
-								 <th class="th-sm">Start Date</th>
-								 <th class="th-sm">End Date</th>
-								 <th class="th-sm">Action</th>
-							 </tr>
-						 </tfoot>
-					 </table>
+<div class="container">
+  <div class="jumbotron text-center" style="background-color: #a5dfed">
+    <h2><b>ORGANIZER DASHBOARD</b></h2>
+  </div>
+</div>
+<br />
+<div class="container">
+  <div class="row-sm-4">
+    <div class="text-left">
+      <div class="mb-3 d-flex justify-content-between">
+        <h3><b>My Events</b></h3>
+        <div>
+          <a
+            href="{% url 'app:create_event' %}"
+            type="button"
+            class="btn btn-primary"
+            id="id-CreateEventBtn"
+            name="CreateEventBtn"
+          >
+            Create Event
+          </a>
+        </div>
+      </div>
+      <table
+        id="id-orgevents-list"
+        class="table table-striped table-bordered table-sm table-hover"
+        cellspacing="0"
+        width="100%"
+        style="background-color: #e9fbff"
+      >
+        <input
+          class="form-control"
+          id="id-event-input"
+          type="text"
+          placeholder="Search"
+        />
+        <thead>
+          <tr style="text-align: center">
+            <th class="th-sm">Event Title</th>
+            <th class="th-sm">Event Type</th>
+            <th class="th-sm">Start Date</th>
+            <th class="th-sm">End Date</th>
+            <th class="th-sm">Action</th>
+          </tr>
+        </thead>
+        <tbody id="id-orgEvents-table">
+          <!--  backend code here -->
+          <tr style="text-align: center">
+            <td><!--  backend code here --></td>
+            <td><!--  backend code here --></td>
+            <td><!--  backend code here --></td>
+            <td><!--  backend code here --></td>
+            <td>
+              <button
+                type="button"
+                class="btn btn-primary"
+                data-toggle="modal"
+                data-target="#ModalView"
+              >
+                View
+              </button>
+              <button
+                type="submit"
+                class="btn btn-primary"
+                data-toggle="modal"
+                data-target="#ModalDelete"
+              >
+                Delete
+              </button>
+            </td>
+          </tr>
 
-					 <br><br>
+          <!-- Modal View-->
+          <div
+            class="modal fade"
+            id="ModalViewEvent"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="exampleModalLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h2 class="modal-title" id="id-modalEvent-view">
+                    Update Event
+                  </h2>
+                  <button
+                    type="button"
+                    class="close"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                  >
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
 
-					 <h3><b>Participant Join Requests</b></h3>
-					 <input
-						class="form-control"
-						id="id-org-input"
-						type="text"
-						placeholder="Search"
-					/>
-					 <table
-					 	id="id-join-request"
-						class="table table-striped table-bordered table-sm table-hover"
-						cellspacing="0"
-						width="100%"
-						style="background-color: #e9fbff"
-					 >
-					    <thead>
-							<tr style="text-align: center">
-							  <th class="th-sm">ID</th>
-							  <th class="th-sm">Username</th>
-							  <th>Action</th>
-							</tr>
-						</thead>
-						
-						<tbody id = "id-participantRequest-table">
-						 <!--  backend code here -->
-							<tr style="text-align: center">
-							  <td><!--  backend code here --></td>
-							  <td><!--  backend code here --></td>
-							  <td>
-								<div class="text-center">
-									<form method="POST" enctype="multipart/form-data">
-									  {% csrf_token %}
-									  <input
-										type="number"
-										name="request-id"
-										value="{{request.id}}"
-										hidden
-									  />
-									  <button
-										name="denyParticipant"
-										type="submit"
-										class="btn btn-secondary"
-										data-toggle="modal"
-										data-target="#modalRequestToJoin"
-									  >
-										Deny
-									  </button>
-									  <button
-										name="acceptParticipant"
-										type="submit"
-										class="btn btn-primary"
-										data-toggle="modal"
-										data-target="#modalRequestToJoin"
-									  >
-										Accept
-									  </button>
-									</form>
-								  </div>
-							  </td>
-							</tr>
-						</tbody>
-				
-						<tfoot>
-							<tr style="text-align: center">
-							  <th>ID</th>
-							  <th>Username</th>
-							  <th>Action</th>
-							</tr>
-						</tfoot>
-					</table>
-					
-					<script>
+                <form id="UpdateEventForm" method="POST">
+                  {% csrf_token %}
+
+                  <div class="modal-body">
+                    <div class="row mt-4">
+                      <div class="col-sm-6">
+                        <label>Event Title</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="id-event-title"
+                          name="eventtitle"
+                          placeholder="Event Title"
+                          required="required"
+                        />
+                      </div>
+                      <div class="col-sm-6">
+                        <label>Event Type</label>
+                        <select
+                          name="eventtype"
+                          id="id-event-type"
+                          class="form-select form-select-md"
+                          aria-label=".form-select-md example"
+                        >
+                          <option selected>Open this select menu</option>
+                          <option value="1">Trail Biking</option>
+                          <option value="2">Basketball</option>
+                          <option value="3">Zumba</option>
+                          <option value="3">Univercity</option>
+                          <option value="3">Run-for-a-cause</option>
+                        </select>
+                      </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                      <div class="col-sm-12">
+                        <label>Description</label>
+                        <textarea
+                          name="description"
+                          id="id-description"
+                          class="form-control"
+                          cols="30"
+                          rows="5"
+                          required
+                          style="resize: none"
+                        >
+                        </textarea>
+                      </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                      <div class="col-sm-5">
+                        <label>Start Date</label>
+                        <input
+                          type="date"
+                          class="form-control"
+                          id="id-start-date"
+                          name="startdate"
+                          required="required"
+                        />
+                      </div>
+                      <div class="col-sm-5">
+                        <label>End Date</label>
+                        <input
+                          type="date"
+                          class="form-control"
+                          id="id-end-date"
+                          name="enddate"
+                          required="required"
+                        />
+                      </div>
+                      <div class="col-sm-2">
+                        <label>Upvotes</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="id-upvotes"
+                          name="upvotes"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <!--modal-body-->
+
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      data-dismiss="modal"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      id="UpdateBtn"
+                      name="UpdateBtn"
+                      class="btn btn-primary"
+                    >
+                      Update
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <!-- Modal View Ends -->
+
+          <!-- Modal Delete -->
+          <div
+            class="modal fade"
+            id="ModalDelete"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="exampleModalLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h2 class="modal-title" id="id-modal-delete">DELETE EVENT</h2>
+                  <button
+                    type="button"
+                    class="close"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                  >
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+
+                <form id="DeleteEventForm" method="post">
+                  {% csrf_token %}
+
+                  <div class="modal-body">
+                    <input type="text" name="eventID" hidden />
+                    Are you sure you want to delete this customer?
+                  </div>
+
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      data-dismiss="modal"
+                    >
+                      No
+                    </button>
+                    <button
+                      type="submit"
+                      id="DeleteBtn"
+                      name="DeleteBtn"
+                      class="btn btn-primary"
+                    >
+                      Yes
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <!-- Modal Delete Ends -->
+        </tbody>
+
+        <tfoot>
+          <tr style="text-align: center">
+            <th class="th-sm">Event Title</th>
+            <th class="th-sm">Event Type</th>
+            <th class="th-sm">Start Date</th>
+            <th class="th-sm">End Date</th>
+            <th class="th-sm">Action</th>
+          </tr>
+        </tfoot>
+      </table>
+
+      <br /><br />
+
+      <h3><b>Participant Join Requests</b></h3>
+      <input
+        class="form-control"
+        id="id-org-input"
+        type="text"
+        placeholder="Search"
+      />
+      <table
+        id="id-join-request"
+        class="table table-striped table-bordered table-sm table-hover"
+        cellspacing="0"
+        width="100%"
+        style="background-color: #e9fbff"
+      >
+        <thead>
+          <tr style="text-align: center">
+            <th class="th-sm">ID</th>
+            <th class="th-sm">Username</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+
+        <tbody id="id-participantRequest-table">
+          <!--  backend code here -->
+          <tr style="text-align: center">
+            <td><!--  backend code here --></td>
+            <td><!--  backend code here --></td>
+            <td>
+              <div class="text-center">
+                <form method="POST" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  <input
+                    type="number"
+                    name="request-id"
+                    value="{{request.id}}"
+                    hidden
+                  />
+                  <button
+                    name="denyParticipant"
+                    type="submit"
+                    class="btn btn-secondary"
+                    data-toggle="modal"
+                    data-target="#modalRequestToJoin"
+                  >
+                    Deny
+                  </button>
+                  <button
+                    name="acceptParticipant"
+                    type="submit"
+                    class="btn btn-primary"
+                    data-toggle="modal"
+                    data-target="#modalRequestToJoin"
+                  >
+                    Accept
+                  </button>
+                </form>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+
+        <tfoot>
+          <tr style="text-align: center">
+            <th>ID</th>
+            <th>Username</th>
+            <th>Action</th>
+          </tr>
+        </tfoot>
+      </table>
+
+      <!-- <script>
 						$(document).ready(function () {
 						  $("#id-event-input").on("keyup", function () {
 							var value = $(this).val().toLowerCase();
@@ -374,11 +365,9 @@
 							});
 						  });
 						});
-					</script>
-						
-			</div>
-		</div>
-	</div>
-		
-  {% endblock content %}
+					</script> -->
+    </div>
+  </div>
+</div>
 
+{% endblock content %}
