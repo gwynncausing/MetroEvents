@@ -22,6 +22,11 @@ class Address(models.Model):
 #     def __str__(self):
 #         return self.username
 
+class Review(models.Model):
+    title = models.CharField(max_length = 45, blank = True, null = True)
+    comments = models.CharField(max_length = 45, blank = True, null = True)
+    upvote = models.IntegerField()
+
 class Event(models.Model):
     # organizer = models.ForeignKey(User, on_delete=models.CASCADE, null = True, blank = True)
     title = models.CharField(max_length = 45, blank = True, null = True)
@@ -30,7 +35,7 @@ class Event(models.Model):
     datetime_start = models.DateField(default = timezone.now, blank = True)
     datetime_end = models.DateField(default = timezone.now, blank = True)
     upvotes = models.IntegerField(default = 0, blank = True, null = True)
-    
+    review = models.ManyToManyField(Review, blank = True)
     participants = models.ManyToManyField(User, blank = True)
     
     def __str__(self):

@@ -104,6 +104,19 @@ class RegularUserView(View):
       
       messages.info(request, "You have requested to become an organizer, you will be redicted to an organizer page once you are a organizer.")
       return redirect('app:user')
+    elif 'review' in request.POST:
+      # TODO: this is not yet implemented
+      eventid = request.POST.get('event-id')
+      event = Event.objects.get(id = eventid)
+      title = request.POST.get('title')
+      comments = request.POST.get('comments')
+      upvote = request.POST.get('upvote')
+      review = Review.objects.create(title = title, comments = comments, upvote = upvote)
+      event.review = [review]
+      event.save()
+
+      
+
 
 class CreateEventView(View):
   def get(self, request):
