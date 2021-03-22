@@ -35,7 +35,7 @@
           <td>{{myevent.type}}</td>
           <td>{{myevent.description}}</td>
           <td>{{myevent.datetime_start}}</td>
-          <td>{{myevent.datetime_end}}/td></td>
+          <td>{{myevent.datetime_end}}</td>
           <td>
             <center>
               <div class="text-center">
@@ -43,18 +43,12 @@
                   type="submit"
                   class="btn btn-primary"
                   data-bs-toggle="modal"
-                  data-bs-target="#ModalUpvote"
+                  data-bs-target="#ModalUpvote-{{myevent.id}}"
                 >
                   Upvote
                 </button>
 
-                <div
-                  class="modal fade"
-                  id="ModalUpvote"
-                  tabindex="-1"
-                  aria-labelledby="exampleModalLabel"
-                  aria-hidden="true"
-                >
+                <div class="modal fade" id="ModalUpvote-{{myevent.id}}">
                   <div class="modal-dialog">
                     <div class="modal-content">
                       <div class="modal-header">
@@ -75,26 +69,47 @@
                               participated.
                             </div>
                             <div>
-                              <input type="text" value="{{event.id}}" />
+                              <input
+                                type="text"
+                                value="{{myevent.id}}"
+                                name="myevent-id"
+                                hidden
+                              />
                             </div>
                             <div class="d-flex justify-content-evenly mt-3">
-                              <div>
+                              <div
+                                class="btn-group"
+                                role="group"
+                                aria-label="Basic radio toggle button group"
+                              >
                                 <input
                                   type="radio"
-                                  id="upvote"
-                                  name="upvote"
+                                  class="btn-check"
+                                  name="btnradio"
+                                  id="btnradio1"
+                                  autocomplete="off"
+                                  checked
                                   value="upvote"
                                 />
-                                <label for="upvote">UPVOTE</label>
-                              </div>
-                              <div>
+                                <label
+                                  class="btn btn-outline-primary"
+                                  for="btnradio1"
+                                  >Upvote</label
+                                >
+
                                 <input
                                   type="radio"
-                                  id="downvote"
-                                  name="downvote"
+                                  class="btn-check"
+                                  name="btnradio"
+                                  id="btnradio3"
+                                  autocomplete="off"
                                   value="downvote"
                                 />
-                                <label for="downvote">DOWNVOTE</label>
+                                <label
+                                  class="btn btn-outline-primary"
+                                  for="btnradio3"
+                                  >Downvote</label
+                                >
                               </div>
                             </div>
                           </div>
@@ -151,29 +166,39 @@
                       <form method="post">
                         {% csrf_token %}
                         <div class="modal-body">
-                          <div class="text-start">
+                          <div class="text-center mb-3">
                             How was the event? Give us your thoughts. <br />
-                            <br />
-                          </div>
-                          <form
-                            action="/html/tags/html_form_tag_action.cfm"
-                            method="post"
-                          >
                             <div>
-                              <textarea
-                                name="comments"
-                                id="comments"
-                                style="
-                                  font-family: sans-serif;
-                                  font-size: 1em;
-                                  height: 150px;
-                                  width: 400px;
-                                "
-                              >
- Hey... say something!</textarea
-                              >
+                              <input
+                                type="text"
+                                value="{{myevent.id}}"
+                                name="myevent-id"
+                                hidden
+                              />
                             </div>
-                          </form>
+                          </div>
+                          <div class="w-90 mb-3">
+                            <input
+                              class="w-75"
+                              type="text"
+                              name="review-title"
+                              placeholder="Title"
+                              required
+                            />
+                          </div>
+                          <div>
+                            <textarea
+                              class="w-75"
+                              name="comments"
+                              placeholder="Hey... say something!"
+                              style="
+                                font-family: sans-serif;
+                                font-size: 1em;
+                                height: 150px;
+                              "
+                              required
+                            ></textarea>
+                          </div>
                         </div>
 
                         <div class="modal-footer">

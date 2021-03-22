@@ -97,7 +97,6 @@ class RegularUserView(View):
   def post(self, request):
     if 'requestToJoin' in request.POST:
       print(request.POST.get('event-id'))
-      return redirect('app:user')
     elif 'requestToBecomeOrg' in request.POST:
       print(request.user.id)
       req = Request.objects.filter(user = request.user, requestType = "Promote to Organizer")
@@ -107,25 +106,32 @@ class RegularUserView(View):
       reqOrg = Request.objects.create(user = request.user, requestType = "Promote to Organizer")
       
       messages.info(request, "You have requested to become an organizer, you will be redicted to an organizer page once you are a organizer.")
-      return redirect('app:user')
-    elif 'review' in request.POST:
-      # TODO: this is not yet implemented
-      eventid = request.POST.get('event-id')
-      event = Event.objects.get(id = eventid)
-      title = request.POST.get('title')
-      comments = request.POST.get('comments')
-      upvote = request.POST.get('upvote')
-      review = Review.objects.create(title = title, comments = comments, upvote = upvote)
-      event.review = [review]
-      event.save()
-      return redirect('app:user')
     elif 'submitUpvote' in request.POST:
-      upvote = request.POST.get('upvote')
-      downvote = request.POST.get('downvote')
-      print(upvote, downvote)
+      myeventid = request.POST.get('myevent-id')
+      event = Event.objects.get(id = myeventid)
 
+      btnradio = request.POST.get('btnradio')
 
+      if btnradio == "upvote":
+        event.upvotes = event.upvotes + 1
+        event.save()
+      elif btnradio == "downvote":
+        event.upvotes = event.upvotes - 1
+        event.save()
       return redirect('app:user')
+    elif 'submitComment' in request.POST:
+      myeventid = request.POST.get('myevent-id')
+      event = Event.objects.get(id = myeventid)
+
+      title = request.POST.get('review-title')
+      comments = request.POST.get('comments')
+      print(title, comments)
+      
+      review = Review.objects.create(title = title, comments = comments)
+      event.review.add(review)
+      event.save()
+
+    return redirect('app:user')
 
 
 

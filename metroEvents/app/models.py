@@ -25,7 +25,6 @@ class Address(models.Model):
 class Review(models.Model):
     title = models.CharField(max_length = 45, blank = True, null = True)
     comments = models.CharField(max_length = 45, blank = True, null = True)
-    upvote = models.IntegerField()
 
 class Event(models.Model):
     # organizer = models.ForeignKey(User, on_delete=models.CASCADE, null = True, blank = True)
