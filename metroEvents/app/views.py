@@ -21,8 +21,6 @@ def format_date(objects):
         object.datetime_start = object.datetime_start.strftime("%Y-%m-%d")
         object.datetime_end = object.datetime_end.strftime("%Y-%m-%d")
 
-        print(object.datetime_start)
-
 def logoutUser(request):
   logout(request)
   return redirect('app:login')
@@ -245,3 +243,21 @@ class OrgDashboardView(View):
       else:
         return redirect('app:login')
     return redirect('app:login')
+
+  def post(self, request):
+    if 'UpdateBtn' in request.POST:
+      id = request.POST.get("event-id")
+      title = request.POST.get("eventtitle")
+      type = request.POST.get("eventtype")
+      description = request.POST.get("description")
+      datetime_start = request.POST.get("startdate")
+      datetime_end = request.POST.get("enddate")
+      print(id, title, type, description, datetime_start, datetime_end)
+      Event.objects.filter(id=id).update(title=title, type = type, description = description, datetime_start = datetime_start, datetime_end = datetime_end)
+    
+    elif 'DeleteBtn' in request.POST:
+      print('delete')
+      id = request.POST.get("event-id")
+      Event.objects.get(id = id).delete()
+      # print(id)
+    return redirect('app:organizer')
