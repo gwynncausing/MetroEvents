@@ -43,27 +43,30 @@
           <tr style="text-align: center">
             <th class="th-sm">Event Title</th>
             <th class="th-sm">Event Type</th>
+            <th class="th-sm">Description</th>
             <th class="th-sm">Start Date</th>
             <th class="th-sm">End Date</th>
             <th class="th-sm">Action</th>
           </tr>
         </thead>
         <tbody id="id-orgEvents-table">
-          <!--  backend code here -->
+          {% for myevent in myEvents %}
           <tr style="text-align: center">
-            <td><!--  backend code here --></td>
-            <td><!--  backend code here --></td>
-            <td><!--  backend code here --></td>
-            <td><!--  backend code here --></td>
+            <td>{{myevent.title}}</td>
+            <td>{{myevent.type}}</td>
+            <td>{{myevent.description}}</td>
+            <td>{{myevent.datetime_start}}</td>
+            <td>{{myevent.datetime_end}}</td>
             <td>
               <button
                 type="button"
                 class="btn btn-primary"
-                data-toggle="modal"
-                data-target="#ModalView"
+                data-bs-toggle="modal"
+                data-bs-target="#ModalViewEvent-{{myevent.id}}"
               >
                 View
               </button>
+
               <button
                 type="submit"
                 class="btn btn-primary"
@@ -72,143 +75,145 @@
               >
                 Delete
               </button>
+
+              <div
+                class="modal fade"
+                id="ModalViewEvent-{{myevent.id}}"
+                tabindex="-1"
+                role="dialog"
+                aria-labelledby="exampleModalLabel"
+                aria-hidden="true"
+              >
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h2 class="modal-title" id="id-modalEvent-view">
+                        Update Event
+                      </h2>
+                      <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                      ></button>
+                    </div>
+
+                    <form id="UpdateEventForm" method="POST">
+                      {% csrf_token %}
+
+                      <div class="modal-body">
+                        <div class="row mt-4">
+                          <div class="col-sm-6 text-start">
+                            <label>Event Title</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="id-event-title"
+                              name="eventtitle"
+                              placeholder="Event Title"
+                              required="required"
+                              value="{{myevent.title}}"
+                            />
+                          </div>
+                          <div class="col-sm-6 text-start">
+                            <label>Event Type</label>
+                            <select
+                              name="eventtype"
+                              id="id-event-type"
+                              class="form-select form-select-md"
+                              aria-label=".form-select-md example"
+                              value="{{myevent.type}}"
+                            >
+                              <!-- <option selected>Open this select menu</option> -->
+                              <option value="Trail Biking">Trail Biking</option>
+                              <option value="Basketball">Basketball</option>
+                              <option value="Zumba">Zumba</option>
+                              <option value="Univercity">Univercity</option>
+                              <option value="Run-for-a-cause">
+                                Run-for-a-cause
+                              </option>
+                            </select>
+                          </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                          <div class="col-sm-12 text-start">
+                            <label>Description</label>
+                            <textarea
+                              name="description"
+                              id="id-description"
+                              class="form-control"
+                              cols="30"
+                              rows="5"
+                              required
+                              style="resize: none"
+                            >
+{{myevent.description}}</textarea
+                            >
+                          </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                          <div class="col-sm-5 text-start">
+                            <label>Start Date</label>
+                            <input
+                              type="date"
+                              class="form-control"
+                              name="startdate"
+                              required
+                              value="{{myevent.datetime_start}}"
+                            />
+                          </div>
+                          <div class="col-sm-5 text-start">
+                            <label>End Date</label>
+                            <input
+                              type="date"
+                              class="form-control"
+                              name="enddate"
+                              required="required"
+                              value="{{myevent.datetime_end}}"
+                            />
+                          </div>
+                          <div class="col-sm-2 text-start">
+                            <label>Upvotes</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              name="upvotes"
+                              value="{{myevent.upvotes}}"
+                              readonly
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="modal-footer">
+                        <button
+                          type="button"
+                          class="btn btn-secondary"
+                          data-dismiss="modal"
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          type="submit"
+                          id="UpdateBtn"
+                          name="UpdateBtn"
+                          class="btn btn-primary"
+                        >
+                          Update
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+              <!-- Modal View Ends -->
             </td>
           </tr>
-
-          <!-- Modal View-->
-          <div
-            class="modal fade"
-            id="ModalViewEvent"
-            tabindex="-1"
-            role="dialog"
-            aria-labelledby="exampleModalLabel"
-            aria-hidden="true"
-          >
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h2 class="modal-title" id="id-modalEvent-view">
-                    Update Event
-                  </h2>
-                  <button
-                    type="button"
-                    class="close"
-                    data-dismiss="modal"
-                    aria-label="Close"
-                  >
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-
-                <form id="UpdateEventForm" method="POST">
-                  {% csrf_token %}
-
-                  <div class="modal-body">
-                    <div class="row mt-4">
-                      <div class="col-sm-6">
-                        <label>Event Title</label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          id="id-event-title"
-                          name="eventtitle"
-                          placeholder="Event Title"
-                          required="required"
-                        />
-                      </div>
-                      <div class="col-sm-6">
-                        <label>Event Type</label>
-                        <select
-                          name="eventtype"
-                          id="id-event-type"
-                          class="form-select form-select-md"
-                          aria-label=".form-select-md example"
-                        >
-                          <option selected>Open this select menu</option>
-                          <option value="1">Trail Biking</option>
-                          <option value="2">Basketball</option>
-                          <option value="3">Zumba</option>
-                          <option value="3">Univercity</option>
-                          <option value="3">Run-for-a-cause</option>
-                        </select>
-                      </div>
-                    </div>
-                    <br />
-                    <div class="row">
-                      <div class="col-sm-12">
-                        <label>Description</label>
-                        <textarea
-                          name="description"
-                          id="id-description"
-                          class="form-control"
-                          cols="30"
-                          rows="5"
-                          required
-                          style="resize: none"
-                        >
-                        </textarea>
-                      </div>
-                    </div>
-                    <br />
-                    <div class="row">
-                      <div class="col-sm-5">
-                        <label>Start Date</label>
-                        <input
-                          type="date"
-                          class="form-control"
-                          id="id-start-date"
-                          name="startdate"
-                          required="required"
-                        />
-                      </div>
-                      <div class="col-sm-5">
-                        <label>End Date</label>
-                        <input
-                          type="date"
-                          class="form-control"
-                          id="id-end-date"
-                          name="enddate"
-                          required="required"
-                        />
-                      </div>
-                      <div class="col-sm-2">
-                        <label>Upvotes</label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          id="id-upvotes"
-                          name="upvotes"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <!--modal-body-->
-
-                  <div class="modal-footer">
-                    <button
-                      type="button"
-                      class="btn btn-secondary"
-                      data-dismiss="modal"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      type="submit"
-                      id="UpdateBtn"
-                      name="UpdateBtn"
-                      class="btn btn-primary"
-                    >
-                      Update
-                    </button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-          <!-- Modal View Ends -->
-
+          {% endfor %}
           <!-- Modal Delete -->
-          <div
+          <!-- <div
             class="modal fade"
             id="ModalDelete"
             tabindex="-1"
@@ -258,7 +263,7 @@
                 </form>
               </div>
             </div>
-          </div>
+          </div> -->
           <!-- Modal Delete Ends -->
         </tbody>
 
@@ -266,6 +271,7 @@
           <tr style="text-align: center">
             <th class="th-sm">Event Title</th>
             <th class="th-sm">Event Type</th>
+            <th class="th-sm">Description</th>
             <th class="th-sm">Start Date</th>
             <th class="th-sm">End Date</th>
             <th class="th-sm">Action</th>

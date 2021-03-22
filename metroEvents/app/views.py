@@ -15,6 +15,14 @@ from app.models import *
 
 # Create your views here.
 
+
+def format_date(objects):
+    for object in objects:
+        object.datetime_start = object.datetime_start.strftime("%Y-%m-%d")
+        object.datetime_end = object.datetime_end.strftime("%Y-%m-%d")
+
+        print(object.datetime_start)
+
 def logoutUser(request):
   logout(request)
   return redirect('app:login')
@@ -218,13 +226,22 @@ class OrgDashboardView(View):
       # currentUser.is_staff = True
       # currentUser.save()
       # DO NOT DELETE THIS -----------------------------------
-      print('yay')
+
+      # events = Event.objects.all()
+      
+  
       if currentUser.is_superuser:
           return redirect('app:admin')
       elif not currentUser.is_staff:
         return redirect('app:user')
       elif currentUser.is_staff:
-        return render (request, 'app/orgDashboard.html')
+        organizer = Organizer.objects.get(organizer_id = currentUser)
+        myEvents = Event.objects.filter(organizer = organizer)
+        format_date(myEvents)
+        context = {
+          'myEvents': myEvents,
+        }
+        return render (request, 'app/orgDashboard.html', context)
       else:
         return redirect('app:login')
     return redirect('app:login')
