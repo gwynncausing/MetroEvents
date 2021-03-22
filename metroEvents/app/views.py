@@ -82,7 +82,11 @@ class RegularUserView(View):
         return redirect('app:admin')
       elif not currentUser.is_staff:
         events = Event.objects.all()
-        context = {'events': events}
+        myEvents = Event.objects.filter(participants = currentUser)
+        context = {
+          'events': events,
+          'myEvents': myEvents,
+        }
         return render(request, 'app/regularUserDashboard.html', context)
       elif currentUser.is_staff:
         return redirect('app:organizer')
@@ -114,32 +118,42 @@ class RegularUserView(View):
       review = Review.objects.create(title = title, comments = comments, upvote = upvote)
       event.review = [review]
       event.save()
+      return redirect('app:user')
+    elif 'submitUpvote' in request.POST:
+      upvote = request.POST.get('upvote')
+      downvote = request.POST.get('downvote')
+      print(upvote, downvote)
 
-      
+
+      return redirect('app:user')
+
 
 
 class CreateEventView(View):
   def get(self, request):
     if request.user.is_authenticated:
       currentUser = request.user
-      print('yay')
-    return render(request, 'app/createEvent.html')
+      return render(request, 'app/createEvent.html')
+    return redirect('app:login')
   
   def post(self, request):
+      organizer = Organizer.objects.get(organizer_id = request.user)
       title = request.POST.get("eventtitle")
       type = request.POST.get("eventtype")
       description = request.POST.get("description")
       datetime_start = request.POST.get("startdate")
       datetime_end = request.POST.get("enddate")
-      # # upvotes = 
-      # # participants = 
-      print(title, type, description, datetime_start, datetime_end)
       event = Event.objects.create(title = title, type = type, description = description, datetime_start = datetime_start, datetime_end= datetime_end)
-      
-      print("Event successfully created.")
-      # return HttpResponse('Event successfully created.')
-      return redirect('app:admin')
+      organizer.event.add(event)
 
+      print("Event successfully created.")
+      messages.info(request, 'An event '+ title + ' has been created')
+      if request.user.is_superuser:
+        return redirect('app:organizer')
+      elif request.user.is_staff:
+        return redirect('app:admin')
+      else:
+        return redirect('app:login')
 
 class AdminDashboardView(View):
   def get(self, request):

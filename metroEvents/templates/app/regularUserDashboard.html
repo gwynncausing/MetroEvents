@@ -29,21 +29,23 @@
         </tr>
       </thead>
       <tbody>
+        {% for myevent in myEvents %}
         <tr style="text-align: center">
-          <td>Title</td>
-          <td>Type</td>
-          <td>Description</td>
-          <td>Date Time Start</td>
-          <td>Date Time End</td>
+          <td>{{myevent.title}}</td>
+          <td>{{myevent.type}}</td>
+          <td>{{myevent.description}}</td>
+          <td>{{myevent.datetime_start}}</td>
+          <td>{{myevent.datetime_end}}/td></td>
           <td>
             <center>
               <div class="text-center">
                 <button
-                  type="submit" 
+                  type="submit"
                   class="btn btn-primary"
                   data-bs-toggle="modal"
                   data-bs-target="#ModalUpvote"
-                  >Upvote
+                >
+                  Upvote
                 </button>
 
                 <div
@@ -68,15 +70,34 @@
                         {% csrf_token %}
                         <div class="modal-body">
                           <div class="text-start">
-                            Give upvote or rating to the event you participated. <br>
-
-                          &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp&nbsp &nbsp&nbsp &nbsp&nbsp &nbsp<input type="radio" id="upvote" name="vote" value="upvote">
-                              <label for="upvote">UPVOTE</label>
-                            &nbsp &nbsp&nbsp &nbsp&nbsp &nbsp&nbsp &nbsp&nbsp &nbsp<input type="radio" id="downvote" name="vote" value="downvote">
-                              <label for="downvote">DOWNVOTE</label><br>
-                            
+                            <div class="text-center">
+                              Give upvote or rating to the event you
+                              participated.
+                            </div>
+                            <div>
+                              <input type="text" value="{{event.id}}" />
+                            </div>
+                            <div class="d-flex justify-content-evenly mt-3">
+                              <div>
+                                <input
+                                  type="radio"
+                                  id="upvote"
+                                  name="upvote"
+                                  value="upvote"
+                                />
+                                <label for="upvote">UPVOTE</label>
+                              </div>
+                              <div>
+                                <input
+                                  type="radio"
+                                  id="downvote"
+                                  name="downvote"
+                                  value="downvote"
+                                />
+                                <label for="downvote">DOWNVOTE</label>
+                              </div>
+                            </div>
                           </div>
-                        
                         </div>
 
                         <div class="modal-footer">
@@ -92,20 +113,21 @@
                             name="submitUpvote"
                             class="btn btn-primary"
                           >
-                           Submit
+                            Submit
                           </button>
                         </div>
                       </form>
                     </div>
                   </div>
                 </div>
-                
+
                 <button
-                  type="submit" 
+                  type="submit"
                   class="btn btn-primary"
                   data-bs-toggle="modal"
                   data-bs-target="#ModalComment"
-                  >Comment
+                >
+                  Comment
                 </button>
 
                 <div
@@ -124,21 +146,34 @@
                           class="btn-close"
                           data-bs-dismiss="modal"
                           aria-label="Close"
-                        >
-                        </button>
+                        ></button>
                       </div>
                       <form method="post">
                         {% csrf_token %}
                         <div class="modal-body">
                           <div class="text-start">
-                            How was the event? Give us your thoughts. <br> <br> 
+                            How was the event? Give us your thoughts. <br />
+                            <br />
                           </div>
-                          <form action="/html/tags/html_form_tag_action.cfm" method="post">
+                          <form
+                            action="/html/tags/html_form_tag_action.cfm"
+                            method="post"
+                          >
                             <div>
-                             <textarea name="comments" id="comments" style="font-family:sans-serif;font-size:1em; height: 150px; width: 400px;"> Hey... say something!</textarea>
+                              <textarea
+                                name="comments"
+                                id="comments"
+                                style="
+                                  font-family: sans-serif;
+                                  font-size: 1em;
+                                  height: 150px;
+                                  width: 400px;
+                                "
+                              >
+ Hey... say something!</textarea
+                              >
                             </div>
                           </form>
-                        
                         </div>
 
                         <div class="modal-footer">
@@ -165,6 +200,16 @@
             </center>
           </td>
         </tr>
+        {% empty %}
+        <tr>
+          <td>No Events Yet</td>
+          <td>No Events Yet</td>
+          <td>No Events Yet</td>
+          <td>No Events Yet</td>
+          <td>No Events Yet</td>
+          <td>No Events Yet</td>
+        </tr>
+        {% endfor %}
       </tbody>
     </table>
   </div>
@@ -266,7 +311,7 @@
                     value="{{event.id}}"
                     hidden
                   />
-                  
+
                   <button
                     name="requestToJoin"
                     type="submit"
@@ -318,12 +363,21 @@
                           </div>
                         </form>
                       </div>
-                    </div> 
+                    </div>
                   </div>
                 </form>
               </div>
             </center>
           </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td>No Events Yet</td>
+          <td>No Events Yet</td>
+          <td>No Events Yet</td>
+          <td>No Events Yet</td>
+          <td>No Events Yet</td>
+          <td>No Events Yet</td>
         </tr>
         {% endfor %}
       </tbody>
