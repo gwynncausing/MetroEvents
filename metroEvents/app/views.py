@@ -122,15 +122,10 @@ class CreateEventView(View):
   def get(self, request):
     if request.user.is_authenticated:
       currentUser = request.user
-      
       print('yay')
-     
     return render(request, 'app/createEvent.html')
   
   def post(self, request):
-    # form = CreateEventForm(request.POST)
-    # print(form.is_valid())
-    # if form.is_valid():
       title = request.POST.get("eventtitle")
       type = request.POST.get("eventtype")
       description = request.POST.get("description")
@@ -139,18 +134,12 @@ class CreateEventView(View):
       # # upvotes = 
       # # participants = 
       print(title, type, description, datetime_start, datetime_end)
-      # event = Event.objects.create(title = title, type = type, description = description, datetime_start = datetime_start, datetime_end= datetime_end)
-      # form = Event(title = title, type = type, description = description, datetime_start = datetime_start, datetime_end = datetime_end)
+      event = Event.objects.create(title = title, type = type, description = description, datetime_start = datetime_start, datetime_end= datetime_end)
       
-      # form.save()
-
       print("Event successfully created.")
-      return HttpResponse('Event successfully created.')
-      # return redirect('app:admin')
+      # return HttpResponse('Event successfully created.')
+      return redirect('app:admin')
 
-    # else:
-    #   print(form.errors)
-    #   return redirect('app:create_event')
 
 class AdminDashboardView(View):
   def get(self, request):
