@@ -33,12 +33,6 @@
         width="100%"
         style="background-color: #e9fbff"
       >
-        <input
-          class="form-control"
-          id="id-event-input"
-          type="text"
-          placeholder="Search"
-        />
         <thead>
           <tr style="text-align: center">
             <th class="th-sm">ID</th>
@@ -279,6 +273,16 @@
               <!-- Modal Delete Ends -->
             </td>
           </tr>
+          {% empty %}
+          <tr class="text-center">
+            <td>No Events</td>
+            <td>No Events</td>
+            <td>No Events</td>
+            <td>No Events</td>
+            <td>No Events</td>
+            <td>No Events</td>
+            <td>No Events</td>
+          </tr>
           {% endfor %}
         </tbody>
 
@@ -298,12 +302,6 @@
       <br /><br />
 
       <h3><b>Participant Join Requests</b></h3>
-      <input
-        class="form-control"
-        id="id-org-input"
-        type="text"
-        placeholder="Search"
-      />
       <table
         id="id-join-request"
         class="table table-striped table-bordered table-sm table-hover"
@@ -313,17 +311,21 @@
       >
         <thead>
           <tr style="text-align: center">
-            <th class="th-sm">ID</th>
+            <th class="th-sm">User ID</th>
             <th class="th-sm">Username</th>
+            <th class="th-sm">Event ID</th>
+            <th class="th-sm">Event Name</th>
             <th>Action</th>
           </tr>
         </thead>
 
         <tbody id="id-participantRequest-table">
-          <!--  backend code here -->
+          {% for req in requests %}
           <tr style="text-align: center">
-            <td><!--  backend code here --></td>
-            <td><!--  backend code here --></td>
+            <td>{{req.user_id}}</td>
+            <td>{{req.user}}</td>
+            <td>{{req.event_id}}</td>
+            <td>{{req.event}}</td>
             <td>
               <div class="text-center">
                 <form method="POST" enctype="multipart/form-data">
@@ -331,7 +333,21 @@
                   <input
                     type="number"
                     name="request-id"
-                    value="{{request.id}}"
+                    value="{{req.id}}"
+                    hidden
+                    readonly
+                  />
+                  <input
+                    type="number"
+                    name="event-id"
+                    value="{{req.event_id}}"
+                    hidden
+                    readonly
+                  />
+                  <input
+                    type="number"
+                    name="user-id"
+                    value="{{req.user_id}}"
                     hidden
                     readonly
                   />
@@ -339,8 +355,6 @@
                     name="denyParticipant"
                     type="submit"
                     class="btn btn-secondary"
-                    data-toggle="modal"
-                    data-target="#modalRequestToJoin"
                   >
                     Deny
                   </button>
@@ -348,8 +362,6 @@
                     name="acceptParticipant"
                     type="submit"
                     class="btn btn-primary"
-                    data-toggle="modal"
-                    data-target="#modalRequestToJoin"
                   >
                     Accept
                   </button>
@@ -357,12 +369,23 @@
               </div>
             </td>
           </tr>
+          {% empty %}
+          <tr class="text-center">
+            <td>No Request</td>
+            <td>No Request</td>
+            <td>No Request</td>
+            <td>No Request</td>
+            <td>No Request</td>
+          </tr>
+          {% endfor %}
         </tbody>
 
         <tfoot>
           <tr style="text-align: center">
-            <th>ID</th>
+            <th>User ID</th>
             <th>Username</th>
+            <th>Event ID</th>
+            <th>Event Title</th>
             <th>Action</th>
           </tr>
         </tfoot>

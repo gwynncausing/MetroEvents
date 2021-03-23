@@ -87,11 +87,11 @@ class RegularUserView(View):
       # if currentUser.is_superuser:
       #   return redirect('app:admin')
       # elif not currentUser.is_staff:
-      events = Event.objects.all()
       myEvents = Event.objects.filter(participants = currentUser)
+      events = Event.objects.exclude(participants = currentUser)
       context = {
-        'events': events,
         'myEvents': myEvents,
+        'events': events,
       }
       return render(request, 'app/regularUserDashboard.html', context)
       # elif currentUser.is_staff:
@@ -102,17 +102,18 @@ class RegularUserView(View):
 
   def post(self, request):
     if 'requestToJoin' in request.POST:
-      print(request.POST.get('event-id'))
-      req = Request.objects.filter(user = request.user, requestType = "Join Event")
+      eventid = request.POST.get('event-id')
+      print()
+      req = Request.objects.filter(user = request.user, requestType = "Join Event", event_id = eventid)
       if req:
         messages.info(request, "You have already requested to join the event.")
         return redirect('app:user')
-      reqJoin = Request.objects.create(user = request.user, requestType = "Join Event")
+      reqJoin = Request.objects.create(user = request.user, requestType = "Join Event", event_id = eventid)
       
       messages.info(request, "You have requested to join the event, you will received a notification once the organizer approve your request .")
     elif 'requestToBecomeOrg' in request.POST:
       print(request.user.id)
-      req = Request.objects.filter(user = request.user, requestType = "Promote to Organizer", status = "Accepted")
+      req = Request.objects.filter(user = request.user, requestType = "Promote to Organizer")
       if req:
         messages.info(request, "You have already requested to become an organizer.")
         return redirect('app:user')
@@ -163,7 +164,10 @@ class CreateEventView(View):
       description = request.POST.get("description")
       datetime_start = request.POST.get("startdate")
       datetime_end = request.POST.get("enddate")
+      print(datetime_start)
+      print(datetime_end)
       event = Event.objects.create(title = title, type = type, description = description, datetime_start = datetime_start, datetime_end= datetime_end)
+      print(event.datetime_start)
       organizer.event.add(event)
 
       print("Event successfully created.")
@@ -199,16 +203,18 @@ class AdminDashboardView(View):
 
   def post(self, request):
     if 'acceptOrg' in request.POST:
-      print("hello", request.POST.get("request-id"))
-      req = Request.objects.get(id = request.POST.get("request-id"))
+      userid = request.POST.get("user-id")
+      requestid = request.POST.get("request-id")
+      req = Request.objects.get(id = requestid)
+      organizer = Organizer.objects.create(organizer_id = userid)
       req.status = "Accepted"
       req.datetime_reply = datetime.datetime.now()
       req.replied_by = request.user
       user = req.user
       user.is_staff = True
+      organizer.save()
       req.save()
       user.save()
-      print(user)
     if 'denyOrg' in request.POST:
       print("world")
       req = Request.objects.get(id = request.POST.get("request-id"))
@@ -223,32 +229,15 @@ class OrgDashboardView(View):
   def get(self, request):
     if request.user.is_authenticated:
       currentUser = request.user
-      # DO NOT DELETE THIS -----------------------------------
-      # title = 'test'
-      # type = 'test'
-      # description = 'none'
-      # upvotes = 0
-      # dateee = date.today()
-      # event = Event.objects.create(title = title, type = type, description = description, datetime_start = dateee, datetime_end= dateee, upvotes = upvotes)
-      # print('current user: ', currentUser.id)
-      # organizer = Organizer.objects.create(organizer_id = currentUser.id)
-      # print(currentUser.is_staff)
-      # currentUser.is_staff = True
-      # currentUser.save()
-      # DO NOT DELETE THIS -----------------------------------
-
-      # events = Event.objects.all()
-      
-  
-      # if currentUser.is_superuser:
-      #   return redirect('app:admin')
-      
       if currentUser.is_staff or currentUser.is_superuser:
         organizer = Organizer.objects.get(organizer_id = currentUser)
         myEvents = Event.objects.filter(organizer = organizer)
+
+        requests = Request.objects.filter(event_id__in = myEvents, status = "For Review")
         format_date(myEvents)
         context = {
           'myEvents': myEvents,
+          'requests': requests,
         }
         return render (request, 'app/orgDashboard.html', context)
       elif not currentUser.is_staff:
@@ -258,6 +247,7 @@ class OrgDashboardView(View):
     return redirect('app:login')
 
   def post(self, request):
+    organizer = request.user
     if 'UpdateBtn' in request.POST:
       id = request.POST.get("event-id")
       title = request.POST.get("eventtitle")
@@ -271,17 +261,20 @@ class OrgDashboardView(View):
       print('delete')
       id = request.POST.get("event-id")
       Event.objects.get(id = id).delete()
-    
-    return redirect('app:organizer')
 
-    if 'acceptParticipants' in request.POST:
-      print("hello", request.POST.get("request-id"))
+    if 'acceptParticipant' in request.POST:
+      event = Event.objects.get(id = request.POST.get("event-id"))
       req = Request.objects.get(id = request.POST.get("request-id"))
+      user = User.objects.get(id = request.POST.get("user-id"))
+      event.participants.add(user)
+      req.replied_by = organizer
+      req.datetime_reply = datetime.datetime.now()
       req.status = "Accepted"
       req.save()
-    if 'denyParticipants' in request.POST:
-      print("world")
+    if 'denyParticipant' in request.POST:
       req = Request.objects.get(id = request.POST.get("request-id"))
+      req.replied_by = organizer
+      req.datetime_reply = datetime.datetime.now()
       req.status = "Denied"
       req.save()
     return redirect('app:organizer')
