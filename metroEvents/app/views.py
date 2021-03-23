@@ -111,6 +111,7 @@ class RegularUserView(View):
       reqJoin = Request.objects.create(user = request.user, requestType = "Join Event", event_id = eventid)
       
       messages.info(request, "You have requested to join the event, you will received a notification once the organizer approve your request .")
+      
     elif 'requestToBecomeOrg' in request.POST:
       print(request.user.id)
       req = Request.objects.filter(user = request.user, requestType = "Promote to Organizer")

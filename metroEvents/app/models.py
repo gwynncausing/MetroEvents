@@ -83,6 +83,7 @@ class Notification(models.Model):
     description = models.CharField(max_length = 100)
     datetime  = models.DateTimeField(auto_now_add = True, blank = True)
     request = models.ForeignKey(Request, on_delete=models.CASCADE, null = True, blank = True)
+    user = models.ManyToManyField(User, blank = True)
 
 # class User_Has_Events(models.Model):
 #     event_id = models.IntegerField()
