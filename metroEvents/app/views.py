@@ -274,7 +274,6 @@ class OrgDashboardView(View):
     
     return redirect('app:organizer')
 
- def post(self, request):
     if 'acceptParticipants' in request.POST:
       print("hello", request.POST.get("request-id"))
       req = Request.objects.get(id = request.POST.get("request-id"))
