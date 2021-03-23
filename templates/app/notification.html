@@ -1,0 +1,13 @@
+<div id="notification">
+  <h3 align="center">Notifications</h3>
+  <div class="notification-container">
+    {% for notification in notifications %}
+    <div class="rectangle" class="mx-auto my-auto">
+      <div class="fw-bold">{{notification.title}}</div>
+      <div>{{notification.description}}</div>
+      <hr />
+      <div>{{notification.datetime}}</div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
