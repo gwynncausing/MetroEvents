@@ -87,6 +87,7 @@
               {% endif %}
             </ul>
           </div>
+          {% if user.is_authenticated %}
           <button onclick="myFunction()" class="btn" style="margin-right: 20px">
             Notifications
           </button>
