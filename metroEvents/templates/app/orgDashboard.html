@@ -39,8 +39,10 @@
             <th class="th-sm">Title</th>
             <th class="th-sm">Type</th>
             <th class="th-sm">Description</th>
+            <th class="th-sm">Upvotes</th>
             <th class="th-sm">Start Date</th>
             <th class="th-sm">End Date</th>
+            <th class="th-sm">Participants</th>
             <th class="th-sm">Action</th>
           </tr>
         </thead>
@@ -51,8 +53,10 @@
             <td>{{myevent.title}}</td>
             <td>{{myevent.type}}</td>
             <td>{{myevent.description}}</td>
+            <td>{{myevent.upvotes}}</td>
             <td>{{myevent.datetime_start}}</td>
             <td>{{myevent.datetime_end}}</td>
+            <td>{{myevent.participants.count}}</td>
             <td>
               <button
                 type="button"
@@ -282,6 +286,7 @@
             <td>No Events</td>
             <td>No Events</td>
             <td>No Events</td>
+            <td>No Events</td>
           </tr>
           {% endfor %}
         </tbody>
@@ -292,6 +297,7 @@
             <th class="th-sm">Title</th>
             <th class="th-sm">Type</th>
             <th class="th-sm">Description</th>
+            <th class="th-sm">Upvotes</th>
             <th class="th-sm">Start Date</th>
             <th class="th-sm">End Date</th>
             <th class="th-sm">Action</th>

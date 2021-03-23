@@ -17,21 +17,29 @@
 
     <style type="text/css">
       #notification {
+        margin-top: 10px;
+        margin-bottom: 10px;
         position: absolute;
-        top: 2em;
-        left: 2em;
+        top: 60px;
+        right: 2em;
         width: 15em;
         height: 30em;
         background-color: #0f8a5f;
         color: white;
+        border-radius: 5px;
       }
-      #rectangle {
+      .notification-container {
+        max-height: 27em;
+        overflow: auto;
+        overflow-y: hidden;
+      }
+      .rectangle {
         width: 220px;
-        height: 80px;
-        background: #34a65f;
-        right: 100px;
+        height: auto;
+        background-color: #34a65f;
         border-radius: 10px;
-        padding-left: 10px;
+        padding: 8px;
+        margin: 15px 10px;
       }
     </style>
   </head>
@@ -85,7 +93,7 @@
           <div id="myDIV" style="display: none">
             {% include './app/notification.html' %}
           </div>
-          {% if user.is_authenticated%}
+          {% if user.is_authenticated %}
           <a class="navbar-brand" href="{% url 'app:logout' %}">Logout</a>
           {% endif %}
         </div>

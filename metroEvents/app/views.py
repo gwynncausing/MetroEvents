@@ -75,6 +75,14 @@ class RegistrationView(View):
     print(form.is_valid())
     if form.is_valid():
       form.save()
+      user = User.objects.get(username = request.POST.get('username'))
+      notification = Notification.objects.create()
+      notification.title = "New Account!"
+      notification.description = "Hello there! Welcome to 9 Metro Events"
+      notification.datetime = datetime.datetime.now()
+      notification.user.add(user)
+      notification.save()
+
       return redirect('app:login')
     messages.info(request, 'Your password must be between 8 and 30 characters.')
     messages.info(request, 'Your password must contain at least one uppercase, numeric and special character.')
@@ -89,9 +97,11 @@ class RegularUserView(View):
       # elif not currentUser.is_staff:
       myEvents = Event.objects.filter(participants = currentUser)
       events = Event.objects.exclude(participants = currentUser)
+      notifications = Notification.objects.filter(user = currentUser).order_by('-datetime')
       context = {
         'myEvents': myEvents,
         'events': events,
+        'notifications': notifications,
       }
       return render(request, 'app/regularUserDashboard.html', context)
       # elif currentUser.is_staff:
@@ -111,10 +121,10 @@ class RegularUserView(View):
       reqJoin = Request.objects.create(user = request.user, requestType = "Join Event", event_id = eventid)
       
       messages.info(request, "You have requested to join the event, you will received a notification once the organizer approve your request .")
-      
+
     elif 'requestToBecomeOrg' in request.POST:
       print(request.user.id)
-      req = Request.objects.filter(user = request.user, requestType = "Promote to Organizer")
+      req = Request.objects.filter(user = request.user, requestType = "Promote to Organizer", status = "For Review")
       if req:
         messages.info(request, "You have already requested to become an organizer.")
         return redirect('app:user')
@@ -203,26 +213,43 @@ class AdminDashboardView(View):
     return redirect('app:login')
 
   def post(self, request):
+    userid = request.POST.get("user-id")
+    user = User.objects.get(id = userid)
+    notification = Notification.objects.create()
     if 'acceptOrg' in request.POST:
-      userid = request.POST.get("user-id")
       requestid = request.POST.get("request-id")
+
       req = Request.objects.get(id = requestid)
       organizer = Organizer.objects.create(organizer_id = userid)
+
       req.status = "Accepted"
       req.datetime_reply = datetime.datetime.now()
       req.replied_by = request.user
+
       user = req.user
       user.is_staff = True
+      
       organizer.save()
       req.save()
       user.save()
+
+      notification.title = "You are now an Organizer!"
+      notification.description = "You can now access Organizer Dashboard!"
+      notification.datetime = datetime.datetime.now()
+      notification.user.add(user)
+      notification.save()
     if 'denyOrg' in request.POST:
-      print("world")
       req = Request.objects.get(id = request.POST.get("request-id"))
       req.status = "Denied"
       req.datetime_reply = datetime.datetime.now()
       req.replied_by = request.user
       req.save()
+
+      notification.title = "Organizer request denied."
+      notification.description = "Your request has been denied by an administrator"
+      notification.datetime = datetime.datetime.now()
+      notification.user.add(user)
+      notification.save()
     return redirect('app:admin')
 
 
@@ -236,6 +263,7 @@ class OrgDashboardView(View):
 
         requests = Request.objects.filter(event_id__in = myEvents, status = "For Review")
         format_date(myEvents)
+
         context = {
           'myEvents': myEvents,
           'requests': requests,
@@ -272,6 +300,13 @@ class OrgDashboardView(View):
       req.datetime_reply = datetime.datetime.now()
       req.status = "Accepted"
       req.save()
+
+      notification = Notification.objects.create()
+      notification.title = "Join event request accepted"
+      notification.description = "You can now join the " + event.title
+      notification.datetime = datetime.datetime.now()
+      notification.user.add(user)
+      notification.save()
     if 'denyParticipant' in request.POST:
       req = Request.objects.get(id = request.POST.get("request-id"))
       req.replied_by = organizer
