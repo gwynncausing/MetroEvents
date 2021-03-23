@@ -7,14 +7,14 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
 # Create your models here.
 
-class Address(models.Model):
-    # user = models.ForeignKey(User, on_delete = models.CASCADE, null = True)
-    barangay = models.CharField(max_length = 50)
-    city = models.CharField(max_length = 50)
-    province = models.CharField(max_length = 50)
+# class Address(models.Model):
+#     # user = models.ForeignKey(User, on_delete = models.CASCADE, null = True)
+#     barangay = models.CharField(max_length = 50)
+#     city = models.CharField(max_length = 50)
+#     province = models.CharField(max_length = 50)
 
-    def __str__(self):
-        return self.barangay + ", " + self.city + ", " + self.province
+#     def __str__(self):
+#         return self.barangay + ", " + self.city + ", " + self.province
 
 # class MyUser(BaseUserAdmin):
 #     requests = models.ManyToManyField(Requests, blank = True)
@@ -31,8 +31,8 @@ class Event(models.Model):
     title = models.CharField(max_length = 45, blank = True, null = True)
     type = models.CharField(max_length = 45, blank = True, null = True)
     description = models.CharField(max_length = 100, blank = True, null = True)
-    datetime_start = models.DateField(auto_now_add = True, blank = True)
-    datetime_end = models.DateField(auto_now_add = True, blank = True)
+    datetime_start = models.DateField(default=timezone.now(), blank = True, null = True)
+    datetime_end = models.DateField(default=timezone.now(), blank = True, null = True)
     upvotes = models.IntegerField(default = 0, blank = True, null = True)
     review = models.ManyToManyField(Review, blank = True)
     participants = models.ManyToManyField(User, blank = True)
@@ -53,8 +53,8 @@ class Request(models.Model):
     )
     user = models.ForeignKey(User, on_delete=models.CASCADE, null = True, blank = True, related_name = "+")
     requestType = models.CharField(max_length = 30, null = True, choices = REQUEST_TYPE, default = "Join Event")
-    # title = models.CharField(max_length = 45)
-    # description = models.CharField(max_length = 100)
+    event = models.ForeignKey(Event, on_delete=models.SET_NULL, null = True, blank = True, related_name = "+")
+
     status = models.CharField(max_length = 30, null = True, choices = REQUEST_STATUS, default = "For Review")
     datetime_request = models.DateTimeField(auto_now_add = True, blank = True)
     datetime_reply = models.DateTimeField(blank = True, null = True)
@@ -83,6 +83,7 @@ class Notification(models.Model):
     description = models.CharField(max_length = 100)
     datetime  = models.DateTimeField(auto_now_add = True, blank = True)
     request = models.ForeignKey(Request, on_delete=models.CASCADE, null = True, blank = True)
+    user = models.ManyToManyField(User, blank = True)
 
 # class User_Has_Events(models.Model):
 #     event_id = models.IntegerField()

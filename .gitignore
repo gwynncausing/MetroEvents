@@ -4,3 +4,6 @@ metroEvents/app/migrations/0003_auto_20210321_1243.py
 metroEvents/app/migrations/0004_event_upvotes.py
 metroEvents/app/migrations/0002_auto_20210322_0151.py
 metroEvents/app/migrations/0004_auto_20210322_2340.py
+metroEvents/app/migrations/0001_initial.py
+metroEvents/app/migrations/__init__.py
+metroEvents/app/migrations/0002_auto_20210323_1854.py

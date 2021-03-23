@@ -14,6 +14,34 @@
       crossorigin="anonymous"
     />
     <title>Document</title>
+
+    <style type="text/css">
+      #notification {
+        margin-top: 10px;
+        margin-bottom: 10px;
+        position: absolute;
+        top: 60px;
+        right: 2em;
+        width: 15em;
+        height: 30em;
+        background-color: #0f8a5f;
+        color: white;
+        border-radius: 5px;
+      }
+      .notification-container {
+        max-height: 27em;
+        overflow: auto;
+        overflow-y: hidden;
+      }
+      .rectangle {
+        width: 220px;
+        height: auto;
+        background-color: #34a65f;
+        border-radius: 10px;
+        padding: 8px;
+        margin: 15px 10px;
+      }
+    </style>
   </head>
   <body>
     <div class="container">
@@ -59,7 +87,13 @@
               {% endif %}
             </ul>
           </div>
-          {% if user.is_authenticated%}
+          <button onclick="myFunction()" class="btn" style="margin-right: 20px">
+            Notifications
+          </button>
+          <div id="myDIV" style="display: none">
+            {% include './app/notification.html' %}
+          </div>
+          {% if user.is_authenticated %}
           <a class="navbar-brand" href="{% url 'app:logout' %}">Logout</a>
           {% endif %}
         </div>
@@ -73,6 +107,17 @@
       integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
       crossorigin="anonymous"
     ></script>
+
+    <script>
+      function myFunction() {
+        var x = document.getElementById("myDIV");
+        if (x.style.display === "none") {
+          x.style.display = "block";
+        } else {
+          x.style.display = "none";
+        }
+      }
+    </script>
 
     {% block scripts %}
     <!-- Additional scripts tags -->
