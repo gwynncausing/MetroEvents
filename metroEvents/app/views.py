@@ -29,12 +29,12 @@ class LoginView(View):
   def get(self,request):
     if request.user.is_authenticated:
       currentUser = request.user
-      if not currentUser.is_staff:
+      if currentUser.is_superuser:
+        return redirect('app:admin')
+      elif not currentUser.is_staff:
         return redirect('app:user')
       elif currentUser.is_staff:
         return redirect('app:organizer')
-      elif currentUser.is_superuser:
-        return redirect('app:administrator')
       else:
         return HttpResponse("wrong na")
     return render(request, 'app/home.html')
@@ -49,12 +49,12 @@ class LoginView(View):
     if user is not None:
       currentUser = user
       login(request, user)
-      if not currentUser.is_staff:
-        return redirect('app:user')
+      if currentUser.is_superuser:
+        return redirect('app:admin')
       elif currentUser.is_staff:
         return redirect('app:organizer')
-      elif currentUser.is_superuser:
-        return redirect('app:administrator')
+      elif not currentUser.is_staff:
+        return redirect('app:user')
       else:
         return HttpResponse("wrong na")
     else:
@@ -84,25 +84,32 @@ class RegularUserView(View):
   def get(self, request):
     if request.user.is_authenticated:
       currentUser = request.user
-      if currentUser.is_superuser:
-        return redirect('app:admin')
-      elif not currentUser.is_staff:
-        events = Event.objects.all()
-        myEvents = Event.objects.filter(participants = currentUser)
-        context = {
-          'events': events,
-          'myEvents': myEvents,
-        }
-        return render(request, 'app/regularUserDashboard.html', context)
-      elif currentUser.is_staff:
-        return redirect('app:organizer')
-      else:
-        return redirect('app:login')
+      # if currentUser.is_superuser:
+      #   return redirect('app:admin')
+      # elif not currentUser.is_staff:
+      events = Event.objects.all()
+      myEvents = Event.objects.filter(participants = currentUser)
+      context = {
+        'events': events,
+        'myEvents': myEvents,
+      }
+      return render(request, 'app/regularUserDashboard.html', context)
+      # elif currentUser.is_staff:
+      #   return redirect('app:organizer')
+    else:
+      return redirect('app:login')
     return render(request, 'app/home.html')
 
   def post(self, request):
     if 'requestToJoin' in request.POST:
       print(request.POST.get('event-id'))
+      req = Request.objects.filter(user = request.user, requestType = "Join Event")
+      if req:
+        messages.info(request, "You have already requested to join the event.")
+        return redirect('app:user')
+      reqJoin = Request.objects.create(user = request.user, requestType = "Join Event")
+      
+      messages.info(request, "You have requested to join the event, you will received a notification once the organizer approve your request .")
     elif 'requestToBecomeOrg' in request.POST:
       print(request.user.id)
       req = Request.objects.filter(user = request.user, requestType = "Promote to Organizer", status = "Accepted")
@@ -144,8 +151,9 @@ class RegularUserView(View):
 class CreateEventView(View):
   def get(self, request):
     if request.user.is_authenticated:
-      currentUser = request.user
-      return render(request, 'app/createEvent.html')
+      if request.user.is_superuser or request.user.is_staff:
+        currentUser = request.user
+        return render(request, 'app/createEvent.html')
     return redirect('app:login')
   
   def post(self, request):
@@ -232,11 +240,10 @@ class OrgDashboardView(View):
       # events = Event.objects.all()
       
   
-      if currentUser.is_superuser:
-        return redirect('app:admin')
-      elif not currentUser.is_staff:
-        return redirect('app:user')
-      elif currentUser.is_staff:
+      # if currentUser.is_superuser:
+      #   return redirect('app:admin')
+      
+      if currentUser.is_staff or currentUser.is_superuser:
         organizer = Organizer.objects.get(organizer_id = currentUser)
         myEvents = Event.objects.filter(organizer = organizer)
         format_date(myEvents)
@@ -244,6 +251,8 @@ class OrgDashboardView(View):
           'myEvents': myEvents,
         }
         return render (request, 'app/orgDashboard.html', context)
+      elif not currentUser.is_staff:
+        return redirect('app:user')
       else:
         return redirect('app:login')
     return redirect('app:login')
@@ -263,4 +272,17 @@ class OrgDashboardView(View):
       id = request.POST.get("event-id")
       Event.objects.get(id = id).delete()
     
+    return redirect('app:organizer')
+
+ def post(self, request):
+    if 'acceptParticipants' in request.POST:
+      print("hello", request.POST.get("request-id"))
+      req = Request.objects.get(id = request.POST.get("request-id"))
+      req.status = "Accepted"
+      req.save()
+    if 'denyParticipants' in request.POST:
+      print("world")
+      req = Request.objects.get(id = request.POST.get("request-id"))
+      req.status = "Denied"
+      req.save()
     return redirect('app:organizer')
