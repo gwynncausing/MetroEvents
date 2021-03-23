@@ -105,7 +105,7 @@ class RegularUserView(View):
       print(request.POST.get('event-id'))
     elif 'requestToBecomeOrg' in request.POST:
       print(request.user.id)
-      req = Request.objects.filter(user = request.user, requestType = "Promote to Organizer")
+      req = Request.objects.filter(user = request.user, requestType = "Promote to Organizer", status = "Accepted")
       if req:
         messages.info(request, "You have already requested to become an organizer.")
         return redirect('app:user')
@@ -161,9 +161,9 @@ class CreateEventView(View):
       print("Event successfully created.")
       messages.info(request, 'An event '+ title + ' has been created')
       if request.user.is_superuser:
-        return redirect('app:organizer')
-      elif request.user.is_staff:
         return redirect('app:admin')
+      elif request.user.is_staff:
+        return redirect('app:organizer')
       else:
         return redirect('app:login')
 
@@ -194,6 +194,8 @@ class AdminDashboardView(View):
       print("hello", request.POST.get("request-id"))
       req = Request.objects.get(id = request.POST.get("request-id"))
       req.status = "Accepted"
+      req.datetime_reply = datetime.datetime.now()
+      req.replied_by = request.user
       user = req.user
       user.is_staff = True
       req.save()
@@ -203,6 +205,8 @@ class AdminDashboardView(View):
       print("world")
       req = Request.objects.get(id = request.POST.get("request-id"))
       req.status = "Denied"
+      req.datetime_reply = datetime.datetime.now()
+      req.replied_by = request.user
       req.save()
     return redirect('app:admin')
 
@@ -229,7 +233,7 @@ class OrgDashboardView(View):
       
   
       if currentUser.is_superuser:
-          return redirect('app:admin')
+        return redirect('app:admin')
       elif not currentUser.is_staff:
         return redirect('app:user')
       elif currentUser.is_staff:
@@ -254,10 +258,9 @@ class OrgDashboardView(View):
       datetime_end = request.POST.get("enddate")
       print(id, title, type, description, datetime_start, datetime_end)
       Event.objects.filter(id=id).update(title=title, type = type, description = description, datetime_start = datetime_start, datetime_end = datetime_end)
-    
     elif 'DeleteBtn' in request.POST:
       print('delete')
       id = request.POST.get("event-id")
       Event.objects.get(id = id).delete()
-      # print(id)
+    
     return redirect('app:organizer')

@@ -41,8 +41,9 @@
         />
         <thead>
           <tr style="text-align: center">
-            <th class="th-sm">Event Title</th>
-            <th class="th-sm">Event Type</th>
+            <th class="th-sm">ID</th>
+            <th class="th-sm">Title</th>
+            <th class="th-sm">Type</th>
             <th class="th-sm">Description</th>
             <th class="th-sm">Start Date</th>
             <th class="th-sm">End Date</th>
@@ -52,6 +53,7 @@
         <tbody id="id-orgEvents-table">
           {% for myevent in myEvents %}
           <tr style="text-align: center">
+            <td>{{myevent.id}}</td>
             <td>{{myevent.title}}</td>
             <td>{{myevent.type}}</td>
             <td>{{myevent.description}}</td>
@@ -282,8 +284,9 @@
 
         <tfoot>
           <tr style="text-align: center">
-            <th class="th-sm">Event Title</th>
-            <th class="th-sm">Event Type</th>
+            <th class="th-sm">ID</th>
+            <th class="th-sm">Title</th>
+            <th class="th-sm">Type</th>
             <th class="th-sm">Description</th>
             <th class="th-sm">Start Date</th>
             <th class="th-sm">End Date</th>
