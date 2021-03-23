@@ -103,6 +103,13 @@ class RegularUserView(View):
   def post(self, request):
     if 'requestToJoin' in request.POST:
       print(request.POST.get('event-id'))
+      req = Request.objects.filter(user = request.user, requestType = "Join Event")
+      if req:
+        messages.info(request, "You have already requested to join the event.")
+        return redirect('app:user')
+      reqOrg = Request.objects.create(user = request.user, requestType = "Join Event")
+      
+      messages.info(request, "You have requested to join the event, you will received a notification once the organizer approve your request .")
     elif 'requestToBecomeOrg' in request.POST:
       print(request.user.id)
       req = Request.objects.filter(user = request.user, requestType = "Promote to Organizer", status = "Accepted")
@@ -263,4 +270,19 @@ class OrgDashboardView(View):
       id = request.POST.get("event-id")
       Event.objects.get(id = id).delete()
     
+    return redirect('app:organizer')
+
+  def post(self, request):
+    if 'acceptParticipants' in request.POST:
+      print("hello", request.POST.get("request-id"))
+      req = Request.objects.get(id = request.POST.get("request-id"))
+      req.status = "Accepted"
+      req.save()
+      user.save()
+      print(user)
+    if 'denyParticipants' in request.POST:
+      print("world")
+      req = Request.objects.get(id = request.POST.get("request-id"))
+      req.status = "Denied"
+      req.save()
     return redirect('app:organizer')
