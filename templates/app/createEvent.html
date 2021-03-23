@@ -8,77 +8,6 @@
     >
       <h2><b>CREATE EVENT</b></h2>
     </div>
-    <div class="row mt-4">
-      <div class="col-sm-6">
-        <label>Event Title</label>
-        <input
-          type="text"
-          class="form-control"
-          id="id-event-title"
-          name="eventtitle"
-          placeholder="Event Title"
-          required="required"
-        />
-      </div>
-      <div class="col-sm-6">
-        <label>Event Type</label>
-        <select
-          name="eventtype"
-          id="id-event-type"
-          class="form-select form-select-md"
-          aria-label=".form-select-md example"
-          required
-        >
-          <option selected>Open this select menu</option>
-          <option value="1">Trail Biking</option>
-          <option value="2">Basketball</option>
-          <option value="3">Zumba</option>
-          <option value="3">Univercity</option>
-          <option value="3">Run-for-a-cause</option>
-        </select>
-      </div>
-    </div>
-    <br />
-    <div class="row">
-      <div class="col-sm-12">
-        <label>Description</label>
-        <textarea
-          name="description"
-          id="id-description"
-          class="form-control"
-          cols="30"
-          rows="5"
-          required
-          style="resize: none"
-        ></textarea>
-      </div>
-    </div>
-    <br />
-    <div class="row">
-      <div class="col">
-        <label>Start Date</label>
-        <input
-          type="date"
-          class="form-control"
-          id="id-start-date"
-          name="startdate"
-          required="required"
-        />
-      </div>
-      <div class="col">
-        <label>End Date</label>
-        <input
-          type="date"
-          class="form-control"
-          id="id-end-date"
-          name="enddate"
-          required="required"
-        />
-      </div>
-    </div>
-
-    <br /><br />
-
     <form
       id="form1"
       action=""
@@ -87,14 +16,83 @@
       enctype="multipart/form-data"
     >
       {% csrf_token %}
+      <div class="row mt-4">
+        <div class="col-sm-6">
+          <label>Event Title</label>
+          <input
+            type="text"
+            class="form-control"
+            id="id-event-title"
+            name="eventtitle"
+            placeholder="Event Title"
+            required="required"
+          />
+        </div>
+        <div class="col-sm-6">
+          <label>Event Type</label>
+          <select
+            name="eventtype"
+            id="id-event-type"
+            class="form-select form-select-md"
+            aria-label=".form-select-md example"
+            required
+          >
+            <option selected>Open this select menu</option>
+            <option value="Trail Biking">Trail Biking</option>
+            <option value="Basketball">Basketball</option>
+            <option value="Zumba">Zumba</option>
+            <option value="Univercity">Univercity</option>
+            <option value="Run-for-a-cause">Run-for-a-cause</option>
+          </select>
+        </div>
+      </div>
+      <br />
+      <div class="row">
+        <div class="col-sm-12">
+          <label>Description</label>
+          <textarea
+            type="text"
+            name="description"
+            id="id-description"
+            class="form-control"
+            cols="30"
+            rows="5"
+            required
+            style="resize: none"
+          ></textarea>
+        </div>
+      </div>
+      <br />
+      <div class="row">
+        <div class="col">
+          <label>Start Date</label>
+          <input
+            type="date"
+            class="form-control"
+            id="id-start-date"
+            name="startdate"
+            required="required"
+          />
+        </div>
+        <div class="col">
+          <label>End Date</label>
+          <input
+            type="date"
+            class="form-control"
+            id="id-end-date"
+            name="enddate"
+            required="required"
+          />
+        </div>
+      </div>
+      <br /><br />
       <div class="d-flex justify-content-evenly">
-        <button type="reset" value="reset" class="btn btn-secondary">
+        <a value="reset" class="btn btn-secondary" href="{% url 'app:user' %}">
           Cancel
-        </button>
+        </a>
         <button type="submit" class="btn btn-primary">Submit</button>
       </div>
     </form>
   </div>
-
-  {% endblock content %}
 </div>
+{% endblock content %}

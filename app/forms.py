@@ -11,8 +11,8 @@ class CreateUserForm(UserCreationForm):
     fields = ['username', 'email', 'password1', 'password2']
 
 
-class CreateEventForm(forms.ModelForm):
-  class Meta:
-    model = Event
-    # fields = ['title', 'type', 'description', 'datetime_start', 'datetime_end']
-    fields = "__all__"
+# class CreateEventForm(forms.ModelForm):
+#   class Meta:
+#     model = Event
+#     # fields = ['title', 'type', 'description', 'datetime_start', 'datetime_end']
+#     fields = "__all__"
