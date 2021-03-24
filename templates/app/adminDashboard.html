@@ -28,6 +28,7 @@
             <th class="th-sm">Date Registered</th>
             <th class="th-sm">Username</th>
             <th class="th-sm">User Type</th>
+            <th class="th-sm">Actions</th>
           </tr>
         </thead>
 
@@ -44,6 +45,34 @@
             {% else %}
             <td>Regular User</td>
             {% endif %}
+            <td>
+              <form method="post">
+                {% csrf_token %}
+                <input
+                  type="text"
+                  value="{{user.id}}"
+                  name="user-id"
+                  hidden
+                  readonly
+                />
+                {% if not user.is_staff %}
+                <button
+                  type="submit"
+                  class="btn btn-primary"
+                  name="makeAnOrganizer"
+                >
+                  Make an Organizer
+                </button>
+                {% endif %} {% if not user.is_superuser %}
+                <button type="submit" class="btn btn-info" name="makeAnAdmin">
+                  Make an Admin
+                </button>
+                {% endif %}
+                <button type="submit" class="btn btn-danger" name="deleteUser">
+                  Delete
+                </button>
+              </form>
+            </td>
           </tr>
           {% endfor %}
         </tbody>
@@ -54,6 +83,7 @@
             <th>Date Registered</th>
             <th>Username</th>
             <th>User Type</th>
+            <th>Action</th>
           </tr>
         </tfoot>
       </table>

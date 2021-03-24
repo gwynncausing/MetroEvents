@@ -220,10 +220,11 @@ class AdminDashboardView(View):
     return redirect('app:login')
 
   def post(self, request):
-    userid = request.POST.get("user-id")
-    user = User.objects.get(id = userid)
-    notification = Notification.objects.create()
+    
     if 'acceptOrg' in request.POST:
+      userid = request.POST.get("user-id")
+      user = User.objects.get(id = userid)
+      notification = Notification.objects.create()
       requestid = request.POST.get("request-id")
 
       req = Request.objects.get(id = requestid)
@@ -246,6 +247,9 @@ class AdminDashboardView(View):
       notification.user.add(user)
       notification.save()
     if 'denyOrg' in request.POST:
+      userid = request.POST.get("user-id")
+      user = User.objects.get(id = userid)
+      notification = Notification.objects.create()
       req = Request.objects.get(id = request.POST.get("request-id"))
       req.status = "Denied"
       req.datetime_reply = datetime.datetime.now()
@@ -257,6 +261,80 @@ class AdminDashboardView(View):
       notification.datetime = datetime.datetime.now()
       notification.user.add(user)
       notification.save()
+
+    if 'UpdateBtn' in request.POST:
+      id = request.POST.get("event-id")
+      title = request.POST.get("eventtitle")
+      type = request.POST.get("eventtype")
+      description = request.POST.get("description")
+      datetime_start = request.POST.get("startdate")
+      datetime_end = request.POST.get("enddate")
+      print(id, title, type, description, datetime_start, datetime_end)
+      Event.objects.filter(id=id).update(title=title, type = type, description = description, datetime_start = datetime_start, datetime_end = datetime_end)
+
+    elif 'DeleteBtn' in request.POST:
+      print('delete')
+      id = request.POST.get("event-id")
+
+      organizer = Organizer.objects.get(organizer_id = request.user)
+      event = Event.objects.get(id = id)
+      participants = event.participants.all()
+      print(organizer)
+      print(event)
+      print(participants)
+
+      notification = Notification.objects.create()
+
+      notification.title = "Event " + event.title + " has been cancelled"
+      notification.description = "The event has been cancelled due to some problems occurred"
+      notification.datetime = datetime.datetime.now()
+      notification.user.add(*participants)
+      notification.save()
+
+      event.delete()
+
+    elif 'makeAnOrganizer' in request.POST:
+      user = User.objects.get(id = request.POST.get("user-id"))
+      notification = Notification.objects.create()
+
+      organizer = Organizer.objects.create(organizer_id = user.id)
+      user.is_staff = True
+      
+      organizer.save()
+      user.save()
+
+      notification.title = "You are now an Organizer!"
+      notification.description = "You have been granted an organizer status!"
+      notification.datetime = datetime.datetime.now()
+      notification.user.add(user)
+      notification.save()
+    elif 'makeAnAdmin' in request.POST:
+      user = User.objects.get(id = request.POST.get("user-id"))
+      notification = Notification.objects.create()
+
+      administrator = Administrator.objects.create(admin_id = user.id)
+      user.is_staff = True
+      user.is_superuser = True
+      
+      administrator.save()
+      user.save()
+
+      notification.title = "You are now an Admin!"
+      notification.description = "You have been granted an admin status!"
+      notification.datetime = datetime.datetime.now()
+      notification.user.add(user)
+      notification.save()
+    elif 'deleteUser' in request.POST:
+      user = User.objects.get(id = request.POST.get("user-id"))
+
+      notification = Notification.objects.create()
+      notification.title = "You have deleted " + user.username
+      notification.description = "Are you okay to delete a user?"
+      notification.datetime = datetime.datetime.now()
+      notification.user.add(request.user)
+      notification.save()
+
+      user.delete()
     return redirect('app:admin')
 
 
