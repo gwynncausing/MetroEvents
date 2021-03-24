@@ -78,6 +78,7 @@
             <th class="th-sm">Upvotes</th>
             <th class="th-sm">Start Date</th>
             <th class="th-sm">End Date</th>
+            <th class="th-sm">Participants</th>
             <th class="th-sm">Action</th>
           </tr>
         </thead>
@@ -91,6 +92,7 @@
             <td>{{myevent.upvotes}}</td>
             <td>{{myevent.datetime_start}}</td>
             <td>{{myevent.datetime_end}}</td>
+            <td>{{myevent.participants.count}}</td>
             <td>
               <button
                 type="button"
@@ -311,9 +313,9 @@
               <!-- Modal Delete Ends -->
             </td>
           </tr>
-
           {% empty %}
           <tr class="text-center">
+            <td>No Events</td>
             <td>No Events</td>
             <td>No Events</td>
             <td>No Events</td>
@@ -335,6 +337,7 @@
             <th class="th-sm">Upvotes</th>
             <th class="th-sm">Start Date</th>
             <th class="th-sm">End Date</th>
+            <th class="th-sm">Participants</th>
             <th class="th-sm">Action</th>
           </tr>
         </tfoot>

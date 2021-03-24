@@ -76,6 +76,10 @@ class RegistrationView(View):
     if form.is_valid():
       form.save()
       user = User.objects.get(username = request.POST.get('username'))
+      user.email = request.POST.get('email')
+      user.first_name = request.POST.get('firstname')
+      user.last_name = request.POST.get('lastname')
+      user.save()
       notification = Notification.objects.create()
       notification.title = "New Account!"
       notification.description = "Hello there! Welcome to 9 Metro Events"
@@ -199,6 +203,7 @@ class AdminDashboardView(View):
         events = Event.objects.all()
         users = User.objects.all()
         notifications = Notification.objects.filter(user = currentUser).order_by('-datetime')
+        format_date(events)
         context = {
           'requests' : req,
           'events': events,
@@ -294,7 +299,6 @@ class OrgDashboardView(View):
       print('delete')
       id = request.POST.get("event-id")
 
-      # organizer = Organizer.objects.get(id = request.user)
       organizer = Organizer.objects.get(organizer_id = request.user)
       event = Event.objects.get(id = id)
       participants = event.participants.all()
@@ -305,12 +309,12 @@ class OrgDashboardView(View):
       notification = Notification.objects.create()
 
       notification.title = "Event " + event.title + " has been cancelled"
-      notification.description = "The event you joined has been cancelled"
+      notification.description = "The event has been cancelled due to some problems occurred"
       notification.datetime = datetime.datetime.now()
       notification.user.add(*participants)
       notification.save()
 
-      Event.objects.get(id = id).delete()
+      event.delete()
 
     if 'acceptParticipant' in request.POST:
       event = Event.objects.get(id = request.POST.get("event-id"))
