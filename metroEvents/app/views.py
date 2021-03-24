@@ -198,10 +198,12 @@ class AdminDashboardView(View):
         req = Request.objects.filter(requestType = "Promote to Organizer", status = "For Review")
         events = Event.objects.all()
         users = User.objects.all()
+        notifications = Notification.objects.filter(user = currentUser).order_by('-datetime')
         context = {
           'requests' : req,
           'events': events,
           'users': users,
+          'notifications': notifications,
         }
         return render(request, 'app/adminDashboard.html', context)
       elif not currentUser.is_staff:
@@ -264,9 +266,11 @@ class OrgDashboardView(View):
         requests = Request.objects.filter(event_id__in = myEvents, status = "For Review")
         format_date(myEvents)
 
+        notifications = Notification.objects.filter(user = currentUser).order_by('-datetime')
         context = {
           'myEvents': myEvents,
           'requests': requests,
+          'notifications': notifications,
         }
         return render (request, 'app/orgDashboard.html', context)
       elif not currentUser.is_staff:

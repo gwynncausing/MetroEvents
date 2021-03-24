@@ -87,13 +87,13 @@
               {% endif %}
             </ul>
           </div>
+          {% if user.is_authenticated %}
           <button onclick="myFunction()" class="btn" style="margin-right: 20px">
             Notifications
           </button>
           <div id="myDIV" style="display: none">
             {% include './app/notification.html' %}
           </div>
-          {% if user.is_authenticated %}
           <a class="navbar-brand" href="{% url 'app:logout' %}">Logout</a>
           {% endif %}
         </div>
