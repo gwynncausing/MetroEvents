@@ -30,7 +30,7 @@ class Event(models.Model):
     # organizer = models.ForeignKey(User, on_delete=models.CASCADE, null = True, blank = True)
     title = models.CharField(max_length = 45, blank = True, null = True)
     type = models.CharField(max_length = 45, blank = True, null = True)
-    description = models.CharField(max_length = 100, blank = True, null = True)
+    description = models.TextField(blank = True, null = True)
     datetime_start = models.DateField(default=timezone.now(), blank = True, null = True)
     datetime_end = models.DateField(default=timezone.now(), blank = True, null = True)
     upvotes = models.IntegerField(default = 0, blank = True, null = True)
@@ -69,14 +69,14 @@ class Organizer(models.Model):
     event = models.ManyToManyField(Event, blank = True)
 
     def __str__(self):
-        return self.organizer_Id.username
+        return self.organizer.username
 
 class Administrator(models.Model):
     admin = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True, default = 0)
     datePromoted = models.DateField(auto_now_add = True, blank = True)
 
     def __str__(self):
-        return self.admin_id.username
+        return self.admin.username
 
 class Notification(models.Model):
     title = models.CharField(max_length = 45)
