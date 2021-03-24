@@ -69,14 +69,14 @@ class Organizer(models.Model):
     event = models.ManyToManyField(Event, blank = True)
 
     def __str__(self):
-        return self.organizer_Id.username
+        return self.organizer.username
 
 class Administrator(models.Model):
     admin = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True, default = 0)
     datePromoted = models.DateField(auto_now_add = True, blank = True)
 
     def __str__(self):
-        return self.admin_id.username
+        return self.admin.username
 
 class Notification(models.Model):
     title = models.CharField(max_length = 45)

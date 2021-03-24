@@ -293,6 +293,23 @@ class OrgDashboardView(View):
     elif 'DeleteBtn' in request.POST:
       print('delete')
       id = request.POST.get("event-id")
+
+      # organizer = Organizer.objects.get(id = request.user)
+      organizer = Organizer.objects.get(organizer_id = request.user)
+      event = Event.objects.get(id = id)
+      participants = event.participants.all()
+      print(organizer)
+      print(event)
+      print(participants)
+
+      notification = Notification.objects.create()
+
+      notification.title = "Event " + event.title + " has been cancelled"
+      notification.description = "The event you joined has been cancelled"
+      notification.datetime = datetime.datetime.now()
+      notification.user.add(*participants)
+      notification.save()
+
       Event.objects.get(id = id).delete()
 
     if 'acceptParticipant' in request.POST:
