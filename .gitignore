@@ -19,3 +19,4 @@ metroEvents/app/__pycache__/models.cpython-38.pyc
 metroEvents/app/__pycache__/forms.cpython-38.pyc
 metroEvents/app/__pycache__/admin.cpython-38.pyc
 metroEvents/app/__pycache__/__init__.cpython-38.pyc
+*.pyc
