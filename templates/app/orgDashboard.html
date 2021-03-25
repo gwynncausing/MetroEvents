@@ -91,7 +91,7 @@
 
                       <div class="modal-body">
                         <input type="text" name="eventID" hidden />
-                        Check if your friends are coming!
+                        These are the participants who joined the event:
                        
                       </div>
                       
@@ -120,6 +120,15 @@
                 data-bs-target="#modalDelete-{{myevent.id}}"
               >
                 Delete
+              </button>
+
+             <button
+                type="button"
+                class="btn btn-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#ModalEventReviews-{{myevent.id}}"
+              >
+                Reviews
               </button>
 
               <div
@@ -310,7 +319,7 @@
                         <button
                           type="button"
                           class="btn btn-secondary"
-                          data-dismiss="modal"
+                          data-bs-dismiss="modal"
                         >
                           No
                         </button>
@@ -328,6 +337,57 @@
                 </div>
               </div>
               <!-- Modal Delete Ends -->
+
+              <!-- Modal Reviews -->
+              <div
+                class="modal fade"
+                id="ModalViewEvent-{{myevent.id}}"
+                tabindex="-1"
+                aria-labelledby="exampleModalLabel"
+                aria-hidden="true"
+              >
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h2 class="modal-title" id="id-modal-delete">
+                        Participant Reviews
+                      </h2>
+                      <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                      ></button>
+                    </div>
+
+                    <form id="EventReviewForm" method="post">
+                      {% csrf_token %}
+
+                      <div class="modal-body">
+                        <input type="text" name="eventID" hidden />
+                        See participants' comments about the event:
+                      </div>
+                      <input
+                        type="text"
+                        value="{{myevent.id}}"
+                        name="event-id"
+                        hidden
+                        readonly
+                      />
+                      <div class="modal-footer">
+                        <button
+                          type="button"
+                          class="btn btn-secondary"
+                          data-bs-dismiss="modal"
+                        >
+                          No
+                        </button>
+                        
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
             </td>
           </tr>
           {% empty %}
