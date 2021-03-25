@@ -111,7 +111,6 @@
             <th class="th-sm">End Date</th>
             <th class="th-sm">Participants</th>
             <th class="th-sm">Action</th>
-            <th class="th-sm">Review</th>
           </tr>
         </thead>
         <tbody id="id-orgEvents-table">
@@ -153,7 +152,14 @@
               >
                 Delete
               </button>
-
+               <button
+                type="button"
+                class="btn btn-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#ModalReview-{{myevent.id}}"
+              >
+                Reviews
+              </button>
               <div
                 class="modal fade"
                 id="ModalViewEvent-{{myevent.id}}"
