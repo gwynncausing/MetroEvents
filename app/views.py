@@ -312,6 +312,9 @@ class AdminDashboardView(View):
       user = User.objects.get(id = request.POST.get("user-id"))
       notification = Notification.objects.create()
 
+      organizer = Organizer.objects.filter(organizer_id = user.id)
+      if not organizer.count():
+        organizer = Organizer.objects.create(organizer_id = user.id)
       administrator = Administrator.objects.create(admin_id = user.id)
       user.is_staff = True
       user.is_superuser = True
