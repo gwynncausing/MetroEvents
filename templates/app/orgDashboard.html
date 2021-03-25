@@ -56,7 +56,53 @@
             <td>{{myevent.upvotes}}</td>
             <td>{{myevent.datetime_start}}</td>
             <td>{{myevent.datetime_end}}</td>
-            <td>{{myevent.participants.count}}</td>
+            <td>{{myevent.participants.count}}
+              <button
+                type="button"
+                class="btn btn-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#ModalViewParticipant-{{myevent.id}}"
+              >
+              View list
+              </button>
+              <div
+                class="modal fade"
+                id="ModalViewParticipant-{{myevent.id}}"
+                tabindex="-1"
+                aria-labelledby="exampleModalLabel"
+                aria-hidden="true"
+              >
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h2 class="modal-title" id="id-modal-delete">
+                        Participants
+                      </h2>
+                      <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                      ></button>
+                    </div>
+
+                    <form id="ViewParticipantForm" method="post">
+                      {% csrf_token %}
+
+                      <div class="modal-body">
+                        <input type="text" name="eventID" hidden />
+                        Check if your friends are coming!
+                       
+                      </div>
+                      
+                      
+                    </form>
+                  </div>
+                </div>
+              </div>
+              
+              
+            </td>
             <td>
               <button
                 type="button"
