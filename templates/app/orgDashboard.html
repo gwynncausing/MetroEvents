@@ -89,15 +89,6 @@
                     <div class="modal-body">
                       <input type="text" name="eventID" hidden />
 
-<<<<<<< HEAD
-                      {% for participant in myevent.participants.all %}
-                      <div><h5>{{participant.username}}</h5></div>
-                      <hr />
-                      {% empty %}
-                      <div><h5>Check if your friends are coming!</h5></div>
-                      {% endfor %}
-                    </div>
-=======
                     <form id="ViewParticipantForm" method="post">
                       {% csrf_token %}
 
@@ -134,17 +125,10 @@
                             </div>
                       </div>
                     </form>
->>>>>>> e82f9a5b7fc21cc3f0c0b9fc35e74d5d7697248b
                   </div>
                 </div>
-<<<<<<< HEAD
-              </div>  
-=======
+              </div> 
               </div>
-<<<<<<< Updated upstream
-=======
->>>>>>> 992e1d755358112d3752dba7a848e54c195f4591
->>>>>>> Stashed changes
             </td>
             <td>
               <button
