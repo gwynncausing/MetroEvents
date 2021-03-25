@@ -52,20 +52,26 @@
             <td>{{myevent.id}}</td>
             <td>{{myevent.title}}</td>
             <td>{{myevent.type}}</td>
-            <td>{{myevent.description}}</td>
+            <td>
+              <div style="word-wrap: break-word; max-width: 450px">
+                {{myevent.description}}
+              </div>
+            </td>
             <td>{{myevent.upvotes}}</td>
             <td>{{myevent.datetime_start}}</td>
             <td>{{myevent.datetime_end}}</td>
             <td>
-              {{myevent.participants.count}}
-              <button
-                type="button"
-                class="btn btn-primary"
-                data-bs-toggle="modal"
-                data-bs-target="#ModalViewParticipant-{{myevent.id}}"
-              >
-                View list
-              </button>
+              <div class="mb-2">{{myevent.participants.count}}</div>
+              <div>
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  data-bs-toggle="modal"
+                  data-bs-target="#ModalViewParticipant-{{myevent.id}}"
+                >
+                  View list
+                </button>
+              </div>
               <div
                 class="modal fade"
                 id="ModalViewParticipant-{{myevent.id}}"
@@ -87,57 +93,30 @@
                       ></button>
                     </div>
                     <div class="modal-body">
-                      <input type="text" name="eventID" hidden />
-
-<<<<<<< HEAD
-                      {% for participant in myevent.participants.all %}
-                      <div><h5>{{participant.username}}</h5></div>
-                      <hr />
-                      {% empty %}
-                      <div><h5>Check if your friends are coming!</h5></div>
-                      {% endfor %}
-                    </div>
-=======
-                    <form id="ViewParticipantForm" method="post">
-                      {% csrf_token %}
-
                       <div class="modal-body">
-                        <input type="text" name="eventID" hidden />
-                        These are the participants who joined the event:
+                        <div class="mb-4">
+                          These are the participants who joined the event:
+                        </div>
                         <div>
-                            <div class="w-90 mb-3">
-                              <input
-                                class="w-75"
-                                type="text"
-                                name="review-title"
-                                placeholder="Name"
-                                required
-                              />
-                            </div>
-                            <div class="w-90 mb-3">
-                              <input
-                                class="w-75"
-                                type="text"
-                                name="review-title"
-                                placeholder="Name"
-                                required
-                              />
-                            </div>
-                            <div class="w-90 mb-3">
-                              <input
-                                class="w-75"
-                                type="text"
-                                name="review-title"
-                                placeholder="Name"
-                                required
-                              />
-                            </div>
-                       
+                          {% for participant in myevent.participants.all %}
+                          <div class="w-90 mb-3">
+                            <input
+                              class="w-75"
+                              type="text"
+                              name="review-title"
+                              value="{{participant.username}}"
+                              required
+                              readonly
+                            />
+                          </div>
+                          {% empty %}
+                          <div>
+                            <h5>Check if your friends are coming!</h5>
+                          </div>
+                          {% endfor %}
+                        </div>
                       </div>
-                      
-                      
-                    </form>
->>>>>>> e82f9a5b7fc21cc3f0c0b9fc35e74d5d7697248b
+                    </div>
                   </div>
                 </div>
               </div>
@@ -161,7 +140,7 @@
                 Delete
               </button>
 
-             <button
+              <button
                 type="button"
                 class="btn btn-primary"
                 data-bs-toggle="modal"
@@ -382,7 +361,7 @@
               <!-- Modal Reviews -->
               <div
                 class="modal fade"
-                id="ModalViewEvent-{{myevent.id}}"
+                id="ModalEventReviews-{{myevent.id}}"
                 tabindex="-1"
                 aria-labelledby="exampleModalLabel"
                 aria-hidden="true"
@@ -400,32 +379,34 @@
                         aria-label="Close"
                       ></button>
                     </div>
-
-                    <form id="EventReviewForm" method="post">
-                      {% csrf_token %}
-
-                      <div class="modal-body">
-                        <input type="text" name="eventID" hidden />
+                    <div class="modal-body">
+                      <div class="mb-4">
                         See participants' comments about the event:
                       </div>
-                      <input
-                        type="text"
-                        value="{{myevent.id}}"
-                        name="event-id"
-                        hidden
-                        readonly
-                      />
-                      <div class="modal-footer">
-                        <button
-                          type="button"
-                          class="btn btn-secondary"
-                          data-bs-dismiss="modal"
+
+                      <div class="d-flex justify-content-center">
+                        {% for review in myevent.review.all %}
+                        <div
+                          class="comment mb-3 w-75 p-3"
+                          style="border: rgba(0, 0, 0, 0.3) solid 0.5px"
                         >
-                          No
-                        </button>
-                        
+                          <div class="mb-2">
+                            <strong>{{review.title}}</strong>
+                          </div>
+                          <div>{{review.comments}}</div>
+                        </div>
+                        {% endfor %}
                       </div>
-                    </form>
+                    </div>
+                    <div class="modal-footer">
+                      <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal"
+                      >
+                        Close
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
