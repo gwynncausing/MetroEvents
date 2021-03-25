@@ -128,7 +128,7 @@ class RegularUserView(View):
 
     elif 'requestToBecomeOrg' in request.POST:
       print(request.user.id)
-      req = Request.objects.filter(status = "Accepted", user = request.user, requestType = "Promote to Organizer", status = "For Review")
+      req = Request.objects.filter(user = request.user, requestType = "Promote to Organizer", status = "For Review")
       if req:
         messages.info(request, "You have already requested to become an organizer.")
         return redirect('app:user')
