@@ -111,6 +111,7 @@
             <th class="th-sm">End Date</th>
             <th class="th-sm">Participants</th>
             <th class="th-sm">Action</th>
+            <th class="th-sm">Review</th>
           </tr>
         </thead>
         <tbody id="id-orgEvents-table">
@@ -441,6 +442,105 @@
                         </form>
                       </div>
                     </div>
+            </td>
+            <td>
+                <button
+                type="button"
+                class="btn btn-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#ModalReview-{{myevent.id}}"
+              >
+                Review
+              </button>
+                     <div
+              class="modal fade"
+              id="ModalReview-{{myevent.id}}"
+              tabindex="-1"
+              aria-labelledby="exampleModalLabel"
+              aria-hidden="true"
+          >
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Review</h5>
+                  <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  ></button>
+                </div>
+                <form method="post">
+                  {% csrf_token %}
+                  <div class="modal-body">
+                    <div class="text-center mb-3">
+                        Upvotes<br />
+                      <div>
+                        <input
+                          type="text"
+                          value="{{myevent.id}}"
+                          name="myevent-id"
+                          hidden
+                        />
+                      </div>
+                      <div class="w-90 mb-3">
+                        <input
+                          class="w-75"
+                          type="text"
+                          name="review-title"
+                          placeholder="Title"
+                          required
+                        />
+                      </div>
+                      <div class="w-90 mb-3">
+                        <input
+                          class="w-75"
+                          type="text"
+                          name="review-title"
+                          placeholder="Title"
+                          required
+                        />
+                      </div>
+                      <div class="w-90 mb-3">
+                        <input
+                          class="w-75"
+                          type="text"
+                          name="review-title"
+                          placeholder="Title"
+                          required
+                        />
+                      </div>
+                      <div class="w-90 mb-3">
+                        <input
+                          class="w-75"
+                          type="text"
+                          name="review-title"
+                          placeholder="Title"
+                          required
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="modal-footer">
+                    <button
+                      type="submit"
+                      class="btn btn-secondary"
+                      data-bs-dismiss="modal"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      name="cancel"
+                      class="btn btn-primary"
+                    >
+                      Submit
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
             </td>
           </tr>
           {% empty %}
